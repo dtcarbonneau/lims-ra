@@ -23,9 +23,18 @@ export default {
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-            data: json,
-        })),
+         httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+             data: json,
+         })),
+
+    // getOne: (resource, params) => {
+    //     const query = {
+    //         filter: JSON.stringify({id: params.id}),
+    //     };
+    //     console.log(query);
+    //     const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    //     return httpClient(url).then(({ json }) => ({ data: json }));
+    // },
 
     getMany: (resource, params) => {
         const query = {

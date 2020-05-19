@@ -56,7 +56,40 @@ const getUsers = async (req, res) => {
   res.setHeader("Content-Range",'bytes:0-9/9');  
   res.send(rows);
 }
+
+//get Sample Status
+const getSStatus = async (req, res) => {
+  const booleanExpressions = [
+      sql`TRUE`,
+    ];
+  
+  if (req.query.filter) {
+    const queryString = JSON.parse(req.query.filter);
+    if (queryString.id !== undefined) {
+      booleanExpressions.push(
+        sql`id = ANY(${sql.array(queryString.id, 'int4')})
+      `);
+    }
+  }
+
+  const {rows} =  await query(
+    sql`SELECT * FROM s_status WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
+  res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Content-Range",'bytes:0-9/9');  
+  res.send(rows);
+}
+
 //Samples
+const getSample = async (req, res) => {
+  const {rows} =  await query(
+    sql`SELECT * FROM samples WHERE id =  ${req.params.id}`);
+  res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Content-Range",'bytes:0-9/9');  
+  res.send(rows);
+}
+
 const getSamples = async (req, res) => {
   const booleanExpressions = [
     sql`TRUE`,
@@ -91,6 +124,9 @@ const getSamples = async (req, res) => {
   res.send(rows);
 }
 
+const putSample = async (req, res) => {
+  
+  console.log(req.body);
+}
 
-
- export {getSamples, getUsers, getProjects};
+ export {getSamples, getSStatus, getUsers, getProjects, putSample, getSample};
