@@ -1,13 +1,8 @@
 // in src/users.js
 import React from 'react';
-<<<<<<< HEAD
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, 
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput } from 'react-admin';
-=======
-import { Filter, List, Datagrid, Edit, EditButton, SimpleForm, TextInput, TextField, EmailField, ReferenceField,
-        ReferenceInput, SelectInput, NumberField, DateField } from 'react-admin';
->>>>>>> e85842b47436df91ac01dee63ac288b3256deae9
 
 const SamplesFilter = (props) => (
     <Filter {...props}>
@@ -52,11 +47,7 @@ export const SampleList = props => (
             <TextField source="loc" />
             <DateField source="date_cryo" />
             <DateField source="date_exp" />
-<<<<<<< HEAD
             <EditButton/>
-=======
-            <EditButton />
->>>>>>> e85842b47436df91ac01dee63ac288b3256deae9
         </Datagrid>
     </List>
 );

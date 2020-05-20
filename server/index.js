@@ -3,11 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Router = require('express-promise-router');
 const cors = require('cors');
-<<<<<<< HEAD
 import {getSamples, getUsers, getProjects, getSStatus, putSample, getSample} from './queries'  
-=======
-import {getSamples, getUsers, getProjects, updateSamples} from './queries'
->>>>>>> e85842b47436df91ac01dee63ac288b3256deae9
 
 const ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 5000;
