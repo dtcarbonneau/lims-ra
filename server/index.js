@@ -24,7 +24,7 @@ app.get('/api/users',getUsers)
 app.get('/api/projects',getProjects)
 app.get('/api/s_status',getSStatus)
 app.put('/api/samples', putSample)
-app.get('/api/samples/:id', getSample)
+app.get('/api/samples', getSample)
 
 /*router.get('/', (req, res) => {
    var p_name = req.query;

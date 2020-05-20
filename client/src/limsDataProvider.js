@@ -34,6 +34,7 @@ export default {
         };
         console.log("GetOne", query);
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        console.log("GETONE url", url);
         return httpClient(url).then(({ json }) => ({ data: json }));
     },
 
@@ -66,12 +67,10 @@ export default {
     },
 
     update: (resource, params) =>{
-        console.log('resource');
         return httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
-        }).then((console.log('params')))
-          .then(({ json }) => ({ data: json }))},
+        }).then(({ json }) => ({ data: json }))},
 
 
     updateMany: (resource, params) => {
