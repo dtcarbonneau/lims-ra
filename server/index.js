@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Router = require('express-promise-router');
 const cors = require('cors');
-import {getSamples, getUsers, getProjects, getSStatus, putSample, getSample} from './queries'
+import {getSamples, getUsers, getProjects, getSStatus, putSample, getSample} from './queries'  
 
 const ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 5000;
@@ -23,8 +23,7 @@ app.get('/api/samples',getSamples)
 app.get('/api/users',getUsers)
 app.get('/api/projects',getProjects)
 app.get('/api/s_status',getSStatus)
-app.put('/api/samples', putSample)
-app.get('/api/samples/:id', getSample)
+app.put('/api/samples/:id', putSample)
 
 /*router.get('/', (req, res) => {
    var p_name = req.query;
