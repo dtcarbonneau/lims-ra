@@ -23,14 +23,14 @@ const getProjects = async (req, res) => {
         sql`u_id = ${queryString.u_id}
       `);
     }
-    
+
   }
 
   const {rows} =  await query(
     sql`SELECT * FROM projects WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');  
+  res.setHeader("Content-Range",'bytes:0-9/9');
   res.send(rows);
 }
 
@@ -39,7 +39,7 @@ const getUsers = async (req, res) => {
   const booleanExpressions = [
       sql`TRUE`,
     ];
-  
+
   if (req.query.filter) {
     const queryString = JSON.parse(req.query.filter);
     if (queryString.id !== undefined) {
@@ -53,7 +53,7 @@ const getUsers = async (req, res) => {
     sql`SELECT * FROM users WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');  
+  res.setHeader("Content-Range",'bytes:0-9/9');
   res.send(rows);
 }
 
@@ -62,7 +62,7 @@ const getSStatus = async (req, res) => {
   const booleanExpressions = [
       sql`TRUE`,
     ];
-  
+
   if (req.query.filter) {
     const queryString = JSON.parse(req.query.filter);
     if (queryString.id !== undefined) {
@@ -76,7 +76,7 @@ const getSStatus = async (req, res) => {
     sql`SELECT * FROM s_status WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');  
+  res.setHeader("Content-Range",'bytes:0-9/9');
   res.send(rows);
 }
 
@@ -86,7 +86,7 @@ const getSample = async (req, res) => {
     sql`SELECT * FROM samples WHERE id =  ${req.params.id}`);
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');  
+  res.setHeader("Content-Range",'bytes:0-9/9');
   res.send(rows);
 }
 
@@ -120,13 +120,17 @@ const getSamples = async (req, res) => {
     sql`SELECT * FROM samples WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');  
+  res.setHeader("Content-Range",'bytes:0-9/9');
   res.send(rows);
 }
 
 const putSample = async (req, res) => {
-  
-  console.log(req.body);
+
+  console.log('PUTSAMPLE called');
+  res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Content-Range",'bytes:0-9/9');
+  res.send(rows);
 }
 
  export {getSamples, getSStatus, getUsers, getProjects, putSample, getSample};

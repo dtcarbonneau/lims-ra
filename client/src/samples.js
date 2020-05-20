@@ -1,6 +1,6 @@
 // in src/users.js
 import React from 'react';
-import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, 
+import { Filter, List, Datagrid, TextField, EmailField, ReferenceField,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput } from 'react-admin';
 
@@ -52,17 +52,17 @@ export const SampleList = props => (
     </List>
 );
 
-export const SampleEdit = props => (
-    <Edit {...props}>
-        <SimpleForm>
-           <TextInput disabled source="id" />
-           <ReferenceInput source="p_id" reference="projects">
-              <SelectInput optionText="p_name" />
-           </ReferenceInput>
-            <ReferenceInput source="u_id" reference="users">
-               <SelectInput optionText="last_name" />
-            </ReferenceInput>
-            <TextInput source="loc" />
-        </SimpleForm>
-    </Edit>
-);
+// export const SampleEdit = props => (
+//     <Edit {...props}>
+//         <SimpleForm>
+//            <TextInput disabled source="id" />
+//            <ReferenceInput source="p_id" reference="projects">
+//               <SelectInput optionText="p_name" />
+//            </ReferenceInput>
+//             <ReferenceInput source="u_id" reference="users">
+//                <SelectInput optionText="last_name" />
+//             </ReferenceInput>
+//             <TextInput source="loc" />
+//         </SimpleForm>
+//     </Edit>
+// );
