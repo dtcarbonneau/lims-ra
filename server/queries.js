@@ -96,7 +96,6 @@ const getSamples = async (req, res) => {
   const booleanExpressions = [
     sql`TRUE`,
   ];
-
   if (req.query.filter) {
     const queryString = JSON.parse(req.query.filter);
     if (queryString.id !== undefined) {
@@ -138,7 +137,7 @@ const getSamples = async (req, res) => {
 // u_id: 3
 
 const putSample = async (req, res) => {
-  console.log('PUTSAMPLE called');
+  console.log('PUTSAMPLE CALLED');
 
   const update = JSON.parse(req.body);
   const booleanExpressions = [];
