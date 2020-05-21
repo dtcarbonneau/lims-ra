@@ -2,7 +2,7 @@
 import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
-        Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton } from 'react-admin';
+        Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create} from 'react-admin';
 import ShipSampButton from './ShipSampButton';
 
 const SamplesFilter = (props) => (
@@ -59,6 +59,25 @@ export const SampleList = props => (
             <EditButton/>
         </Datagrid>
     </List>
+);
+
+export const SampleCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+          <ReferenceInput source="u_id" reference="users" label="User">
+            <SelectInput optionText="last_name" />
+          </ReferenceInput>
+          <ReferenceInput source="ss_id" reference="s_status" label="Status">
+            <SelectInput optionText="ss_name" />
+          </ReferenceInput>
+          <ReferenceInput source="p_id" reference="projects" label="Projects">
+            <SelectInput optionText="p_name" />
+          </ReferenceInput>
+          <TextInput source="loc" label="Location"/>
+          <DateInput source="date_cryo" label="Cryo Date" />
+          <DateInput source="date_exp" label="Expiration Date"/>
+        </SimpleForm>
+    </Create>
 );
 
 // export const SampleEdit = props => (
