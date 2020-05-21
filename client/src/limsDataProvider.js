@@ -28,16 +28,19 @@ export default {
     //      })),
 
     getOne: (resource, params) => {
+        console.log("GETONE Called")
         const id_val = [parseInt(params.id)]
         const query = {
             filter: JSON.stringify({id: id_val}),
         };
-        console.log("GetOne", query);
+        // console.log("GetOne", query);
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        // console.log("GETONE url", url);
         return httpClient(url).then(({ json }) => ({ data: json }));
     },
 
     getMany: (resource, params) => {
+        console.log("GETMANY Called");
         const query = {
             filter: JSON.stringify({id: params.ids}),
         };
@@ -66,12 +69,20 @@ export default {
     },
 
     update: (resource, params) =>{
-        console.log('resource');
-        return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        console.log("UPDATE called");
+        const id_val = [parseInt(params.id)]
+        // const query = {
+        //     filter: JSON.stringify({id: id_val}),
+        // };
+
+        // console.log("Update params.id", params.id);
+        // const query = {
+        //     filter: JSON.stringify({ id: params.ids}),
+        // };
+        return httpClient(`${apiUrl}/${resource}?${id_val}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
-        }).then((console.log('params')))
-          .then(({ json }) => ({ data: json }))},
+        }).then(({ json }) => ({ data: json }))},
 
 
     updateMany: (resource, params) => {

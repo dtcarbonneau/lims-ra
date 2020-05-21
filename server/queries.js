@@ -82,6 +82,7 @@ const getSStatus = async (req, res) => {
 
 //Samples
 const getSample = async (req, res) => {
+  console.log('GETSAMPLE CALLED');
   const {rows} =  await query(
     sql`SELECT * FROM samples WHERE id =  ${req.params.id}`);
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
@@ -91,10 +92,10 @@ const getSample = async (req, res) => {
 }
 
 const getSamples = async (req, res) => {
+  console.log('GETSAMPLES CALLED');
   const booleanExpressions = [
     sql`TRUE`,
   ];
-
   if (req.query.filter) {
     const queryString = JSON.parse(req.query.filter);
     if (queryString.id !== undefined) {
@@ -124,9 +125,34 @@ const getSamples = async (req, res) => {
   res.send(rows);
 }
 
-const putSample = async (req, res) => {
+// {id: 8, sa_name: "sample8", u_id: 3, ss_id: 1, p_id: 1, …}
 
-  console.log('PUTSAMPLE called');
+// date_cryo: 1577836800000
+// date_exp: "2020-01-31"
+// id: 8
+// loc: "000008"
+// p_id: 1
+// sa_name: "sample8"
+// ss_id: 1
+// u_id: 3
+
+const putSample = async (req, res) => {
+  console.log('PUTSAMPLE CALLED');
+
+  const update = JSON.parse(req.body);
+  const booleanExpressions = [];
+
+  if (update.id !== undefined) {
+    const condition = sql`id = ANY(${sql.array(update.id, 'int4')})`;
+  }
+
+  if (update.sa_name !== undefined) {
+    booleanExpressions.push(
+      sql`sa_name = ${update.sa_name}`);
+  }
+
+  const {rows} =  await query(
+    sql`UPDATE samples SET ${sql.join(booleanExpressions,sql` , `)} WHERE ${condition};)`);
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Content-Range",'bytes:0-9/9');
