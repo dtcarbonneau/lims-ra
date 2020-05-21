@@ -139,7 +139,6 @@ const getSamples = async (req, res) => {
 const putSamples = async (req, res) => {
   console.log('PUTSAMPLE CALLED');
 
-  //const update = JSON.parse(req.body);
   const update = req.body;
   const columns = [];
 
@@ -154,12 +153,9 @@ const putSamples = async (req, res) => {
       sql`p_id = ${update.p_id}
     `)
   }
-
   const columnsj = sql.join(columns,sql` , `)
 
   const condition = sql`id = ANY(${sql.array(update.ids, 'int4')})`
-
-  console.log(sql`UPDATE samples SET ${columnsj} WHERE ${condition};`)
 
   const {rows} =  await query(
     sql`UPDATE samples SET ${columnsj} WHERE ${condition};`);
