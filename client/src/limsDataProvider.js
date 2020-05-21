@@ -22,11 +22,6 @@ export default {
         }));
     },
 
-    // getOne: (resource, params) =>
-    //      httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-    //          data: json,
-    //      })),
-
     getOne: (resource, params) => {
         console.log("GETONE Called")
         const id_val = [parseInt(params.id)]
@@ -86,13 +81,15 @@ export default {
         }).then(({ json }) => ({ data: json }));
     },
 
-    create: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}`, {
-            method: 'POST',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
-        })),
+    create: (resource, params) =>{
+        console.log("CREATE called");
+        console.log(params);
+        return httpClient(`${apiUrl}/${resource}`, {
+              method: 'POST',
+              body: JSON.stringify(params.data),
+              }).then(({ json }) => ({
+                  data: { ...params.data, id: json.id },
+              }))},
 
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
