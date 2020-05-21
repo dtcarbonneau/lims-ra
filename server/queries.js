@@ -157,7 +157,7 @@ const putSamples = async (req, res) => {
 
   const columnsj = sql.join(columns,sql` , `)
 
-  const condition = sql`id = ANY(${sql.array(update.id, 'int4')})`
+  const condition = sql`id = ANY(${sql.array(update.ids, 'int4')})`
 
   console.log(sql`UPDATE samples SET ${columnsj} WHERE ${condition};`)
 
