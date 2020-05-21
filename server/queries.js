@@ -136,27 +136,37 @@ const getSamples = async (req, res) => {
 // ss_id: 1
 // u_id: 3
 
-const putSample = async (req, res) => {
+const putSamples = async (req, res) => {
   console.log('PUTSAMPLE CALLED');
 
-  const update = JSON.parse(req.body);
-  const booleanExpressions = [];
+  //const update = JSON.parse(req.body);
+  const update = req.body;
+  const columns = [];
 
-  if (update.id !== undefined) {
-    const condition = sql`id = ANY(${sql.array(update.id, 'int4')})`;
+  if (update.ss_id !== undefined) {
+    columns.push(
+      sql`ss_id = ${update.ss_id}
+    `)
   }
 
-  if (update.sa_name !== undefined) {
-    booleanExpressions.push(
-      sql`sa_name = ${update.sa_name}`);
+  if (update.p_id !== undefined) {
+    columns.push(
+      sql`p_id = ${update.p_id}
+    `)
   }
+
+  const columnsj = sql.join(columns,sql` , `)
+
+  const condition = sql`id = ANY(${sql.array(update.id, 'int4')})`
+
+  console.log(sql`UPDATE samples SET ${columnsj} WHERE ${condition};`)
 
   const {rows} =  await query(
-    sql`UPDATE samples SET ${sql.join(booleanExpressions,sql` , `)} WHERE ${condition};)`);
-  res.setHeader("Access-Control-Expose-Headers", "Content-Range");
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');
+    sql`UPDATE samples SET ${columnsj} WHERE ${condition};`);
+  //res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+  //res.setHeader("Access-Control-Allow-Origin", "*");
+  //res.setHeader("Content-Range",'bytes:0-9/9');
   res.send(rows);
 }
 
- export {getSamples, getSStatus, getUsers, getProjects, putSample, getSample};
+ export {getSamples, getSStatus, getUsers, getProjects, putSamples, getSample};

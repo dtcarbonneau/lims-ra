@@ -1,8 +1,9 @@
 // in src/users.js
-import React from 'react';
+import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
-        Edit, SimpleForm, TextInput, DateInput, NumberInput } from 'react-admin';
+        Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton } from 'react-admin';
+import ShipSampButton from './ShipSampButton';
 
 const SamplesFilter = (props) => (
     <Filter {...props}>
@@ -13,6 +14,14 @@ const SamplesFilter = (props) => (
             <SelectInput optionText="p_name" />
         </ReferenceInput>
     </Filter>
+);
+
+const SamplesBulkActionButtons = props => (
+    <Fragment>
+        <ShipSampButton label="Ship Samples" {...props} />
+        {/* default bulk delete action */}
+        <BulkDeleteButton {...props} />
+    </Fragment>
 );
 
 export const SampleEdit = props => (
@@ -31,7 +40,7 @@ export const SampleEdit = props => (
 );
 
 export const SampleList = props => (
-    <List filters={<SamplesFilter/>}{...props} >
+    <List filters={<SamplesFilter/>}{...props} bulkActionButtons={<SamplesBulkActionButtons />} >
         <Datagrid>
             <TextField source="id" />
             <TextField source="sa_name" />
