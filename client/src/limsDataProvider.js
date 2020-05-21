@@ -70,32 +70,16 @@ export default {
 
     update: (resource, params) =>{
         console.log("UPDATE called");
-        
-        const id_val = [parseInt(params.id)]
-        // const query = {
-        //     filter: JSON.stringify({id: id_val}),
-        // };
-
-        // console.log("Update params.id", params.id);
-        // const query = {
-        //     filter: JSON.stringify({ id: params.ids}),
-        // };
-        //make id an array to work with putSamples
-        params.data['id'] = [params.data.id]
-        console.log(JSON.stringify(params));
-        return httpClient(`${apiUrl}/${resource}?${id_val}`, {
+        params.data['ids'] = [params.data.id]
+        return httpClient(`${apiUrl}/${resource}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }))},
 
 
     updateMany: (resource, params) => {
-        console.log("UPDATE MANY called");
-        console.log(JSON.stringify(params));
-        
-        const query = {
-            filter: JSON.stringify({ id: params.ids}),
-        };
+        params.data['ids'] = params.ids;
+
         return httpClient(`${apiUrl}/${resource}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
