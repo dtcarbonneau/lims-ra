@@ -1,6 +1,7 @@
 import {createPool, sql} from 'slonik';
 var querystring = require('querystring')
-const pool = createPool('postgresql://postgres@localhost:5432/lims_ra');
+const pool = createPool('postgresql://limsuser:limspw@localhost:5433/lims');
+//const pool = createPool('postgresql://postgres@localhost:5432/lims_ra');
 
 var query = (q) => pool.query(q)
 
@@ -193,11 +194,7 @@ const postSamples = async (req, res) => {
     columns.push(
       sql`p_id`)
     values.push(
-<<<<<<< HEAD
-      sql`${sample_id}`)
-=======
       sql`${sample.p_id}`)
->>>>>>> a9402be3a97b4c18a9c32a229b87adbd6d1a2469
   }
 
   if (sample.u_id !== undefined) {
