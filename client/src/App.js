@@ -5,7 +5,7 @@ import {SampleList, SampleEdit, SampleCreate} from './samples'
 
 const App = () => (
       <Admin dataProvider={dataProvider}>
-          <Resource name="samples" list={SampleList} edit={SampleEdit} create={SampleCreate} />
+          <Resource name="samples" list={SampleList} edit={SampleEdit} create={SampleCreate}/>
           <Resource name="users" />
           <Resource name="projects" />
           <Resource name="s_status" />
