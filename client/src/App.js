@@ -9,6 +9,7 @@ const App = () => (
           <Resource name="users" />
           <Resource name="projects" />
           <Resource name="s_status" />
+          <Resource name = "get_avail_store()" />
       </Admin>
   );
 

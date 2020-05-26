@@ -50,7 +50,7 @@ const InsertManyButton = () => {
         <ReferenceInput source="p_id" reference="projects" label="Projects">
           <SelectInput optionText="p_name" />
         </ReferenceInput>
-        <ReferenceInput source="loc" reference="store_locs" label="Storage Options">
+        <ReferenceInput source="loc" reference="get_avail_store()" label="Storage Options">
           <SelectInput optionText="storage locations" />
         </ReferenceInput>
         <TextInput source="samp_list" label="Sample List"/>
