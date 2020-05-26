@@ -1,6 +1,7 @@
 import {createPool, sql} from 'slonik';
 var querystring = require('querystring')
-const pool = createPool('postgresql://postgres@localhost:5432/lims_ra');
+// LOCAL CONNECTION: const pool = createPool('postgresql://postgres@localhost:5432/lims_ra');
+const pool = createPool('postgresql://limsuser:limspw@localhost:5433/lims');
 
 var query = (q) => pool.query(q)
 
@@ -193,11 +194,10 @@ const postSamples = async (req, res) => {
     columns.push(
       sql`p_id`)
     values.push(
-<<<<<<< HEAD
-      sql`${sample_id}`)
-=======
+// <<<<<<< HEAD
+//       sql`${sample_id}`)
+// =======
       sql`${sample.p_id}`)
->>>>>>> a9402be3a97b4c18a9c32a229b87adbd6d1a2469
   }
 
   if (sample.u_id !== undefined) {
@@ -221,4 +221,11 @@ const postSamples = async (req, res) => {
   res.send(rows);
 }
 
- export {getSamples, getSStatus, getUsers, getProjects, putSamples, getSample, postSamples};
+const getSampleStore = async (req, res) => {
+  const {rows} =  await query(
+    sql`SELECT * FROM get_avail_store();`);
+  res.send(rows);
+
+}
+
+ export {getSamples, getSStatus, getUsers, getProjects, putSamples, getSample, postSamples, getSampleStore };
