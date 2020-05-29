@@ -27,7 +27,7 @@ app.get('/api/projects',getProjects)
 app.get('/api/s_status',getSStatus)
 app.put('/api/samples', putSamples)
 app.post('/api/samples', postSamples)
-app.get('api/get_avail_store()', getSampleStore)
+app.get('/api/get_avail_store', getSampleStore)
 // app.get('/api/samples', getSample)
 
 /*router.get('/', (req, res) => {
