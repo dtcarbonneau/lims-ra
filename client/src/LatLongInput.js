@@ -21,14 +21,11 @@ import {
     SelectArrayInput
     } from 'react-admin';
 import ReactDOM from "react-dom";
-import ReactDataGrid from "react-data-grid";
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import dataProvider from './limsDataProvider';
 import {SampleList} from './samples'
 import {AvailStoreList} from './get_avail_store'
 
-
-import { MDBDataTable, MDBInput } from 'mdbreact';
 // import  from 'mdb-react-table-editor';
 
 class LatLngInput extends Component {

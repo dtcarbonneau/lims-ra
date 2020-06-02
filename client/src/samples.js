@@ -1,10 +1,10 @@
 // in src/users.js
 import React, {Fragment} from 'react';
-import { Filter, List, Datagrid, TextField, EmailField, ReferenceField,
+import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create} from 'react-admin';
 import ShipSampButton from './ShipSampButton';
-import InsertManyButton from './InsertMany';
+//import InsertManyButton from './InsertMany';
 
 const SamplesFilter = (props) => (
     <Filter {...props}>
@@ -26,27 +26,23 @@ const SamplesBulkActionButtons = props => (
 );
 
 export const SampleCreate = props => (
-    // <Create {...props}>
     <Create {...props}>
-      <Fragment>
-        <InsertManyButton label="Insert Samples" {...props} />
-      </Fragment>
+         <SimpleForm>
+           <ReferenceInput source="u_id" reference="users" label="User">
+             <SelectInput optionText="last_name" />
+           </ReferenceInput>
+           <ReferenceInput source="ss_id" reference="s_status" label="Status">
+             <SelectInput optionText="ss_name" />
+           </ReferenceInput>
+           <ReferenceInput source="p_id" reference="projects" label="Projects">
+             <SelectInput optionText="p_name" />
+           </ReferenceInput>
+           <TextInput source="loc" label="Location"/>
+           <DateInput source="date_cryo" label="Cryo Date" />
+           <DateInput source="date_exp" label="Expiration Date"/>
+           <Resource name="get_avail_store" list={AvailStoreList}/>
+         </SimpleForm>
     </Create>
-        // <SimpleForm>
-        //   <ReferenceInput source="u_id" reference="users" label="User">
-        //     <SelectInput optionText="last_name" />
-        //   </ReferenceInput>
-        //   <ReferenceInput source="ss_id" reference="s_status" label="Status">
-        //     <SelectInput optionText="ss_name" />
-        //   </ReferenceInput>
-        //   <ReferenceInput source="p_id" reference="projects" label="Projects">
-        //     <SelectInput optionText="p_name" />
-        //   </ReferenceInput>
-        //   <TextInput source="loc" label="Location"/>
-        //   <DateInput source="date_cryo" label="Cryo Date" />
-        //   <DateInput source="date_exp" label="Expiration Date"/>
-        // </SimpleForm>
-    // </Create>
 
 );
 
@@ -86,6 +82,20 @@ export const SampleList = props => (
         </Datagrid>
     </List>
 );
+
+export const AvailStoreList = props => (
+    <List {...props}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="freezer"/>
+            <TextField source="rack"/>
+            <TextField source="first_cell"/>
+            <TextField source="slot_size"/>
+        </Datagrid>
+    </List>
+);
+
+
 
 // export const SampleCreate = props => (
 //     <Create {...props}>

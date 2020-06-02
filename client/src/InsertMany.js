@@ -7,23 +7,21 @@ import {
     useNotify,
     useUnselectAll,
     SimpleForm,
-    List,
-    Datagrid, ReferenceInput, ReferenceField, TextField,
+    ReferenceInput, TextField,
     SelectInput,
     TextInput,
     DateInput,
     List,
     Datagrid,
-    TextField,
     ReferenceField,
     DateField,
     ReferenceArrayInput,
     SelectArrayInput
     } from 'react-admin';
 
-import LatLngInput from './LatLongInput';
 import {SampleList} from './samples'
 import {AvailStoreList} from './get_avail_store'
+import LatLngInput from './LatLongInput'
 
 
 
@@ -64,23 +62,10 @@ const InsertManyButton = (props) => {
         <ReferenceInput source="p_id" reference="projects" label="Projects">
           <SelectInput optionText="p_name" />
         </ReferenceInput>
-<<<<<<< HEAD
-        <ReferenceInput source="id" reference="get_avail_store" label="Storage Options">
-          <SelectInput optionText="first_cell" />
-        </ReferenceInput>
-        <List>
-        <Datagrid>
-            <ReferenceField source="id" reference="get_avail_store">
-                <TextField source="id" label="id" />
-            </ReferenceField>
-        </Datagrid>
-        </List>
-=======
->>>>>>> 314a2198a2184ddc133278ff5765a18ccf92d4cc
         <TextInput source="samp_list" label="Sample List"/>
-        <LatLngInput></LatLngInput>
         <DateInput source="date_cryo" label="Cryo Date" />
         <DateInput source="date_exp" label="Expiration Date"/>
+        <LatLngInput/>
       </SimpleForm>
     );
 }
