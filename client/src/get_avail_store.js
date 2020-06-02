@@ -15,7 +15,7 @@ const SamplesBulkActionButton = props => (
 );
 
 export const AvailStoreList = props => (
-    <List {...props} bulkActionButtons={<SamplesBulkActionButton/>}>
+    <List {...props}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="freezer"/>
