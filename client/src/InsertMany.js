@@ -7,7 +7,8 @@ import {
     useNotify,
     useUnselectAll,
     SimpleForm,
-    ReferenceInput,
+    List,
+    Datagrid, ReferenceInput, ReferenceField, TextField,
     SelectInput,
     TextInput,
     DateInput
@@ -50,9 +51,16 @@ const InsertManyButton = () => {
         <ReferenceInput source="p_id" reference="projects" label="Projects">
           <SelectInput optionText="p_name" />
         </ReferenceInput>
-        <ReferenceInput source="loc" reference="get_avail_store()" label="Storage Options">
-          <SelectInput optionText="storage locations" />
+        <ReferenceInput source="id" reference="get_avail_store" label="Storage Options">
+          <SelectInput optionText="first_cell" />
         </ReferenceInput>
+        <List>
+        <Datagrid>
+            <ReferenceField source="id" reference="get_avail_store">
+                <TextField source="id" label="id" />
+            </ReferenceField>
+        </Datagrid>
+        </List>
         <TextInput source="samp_list" label="Sample List"/>
         <DateInput source="date_cryo" label="Cryo Date" />
         <DateInput source="date_exp" label="Expiration Date"/>
