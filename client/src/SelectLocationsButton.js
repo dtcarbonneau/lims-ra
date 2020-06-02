@@ -9,10 +9,10 @@ import {
 } from 'react-admin';
 
 const SelectLocationsButton = ({ selectedIds }) => {
-    const [open, setOpen] = useState(false);
-    const refresh = useRefresh();
-    const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    // const [open, setOpen] = useState(false);
+    // const refresh = useRefresh();
+    // const notify = useNotify();
+    // const unselectAll = useUnselectAll();
     // const [updateMany, { loading }] = useUpdateMany(
     //     'samples',
     //     selectedIds,
@@ -26,27 +26,29 @@ const SelectLocationsButton = ({ selectedIds }) => {
     //         onFailure: error => notify('Error', 'warning'),
     //     }
     // );
-    const handleClick = () => setOpen(true);
-    const handleDialogClose = () => setOpen(false);
-
-    const handleConfirm = () => {
-        updateMany();
-        setOpen(false);
-    };
+    // const handleClick = () => setOpen(true);
+    // const handleDialogClose = () => setOpen(false);
+    //
+    // const handleConfirm = () => {
+    //     updateMany();
+    //     setOpen(false);
+    // };
 
     return (
         <Fragment>
-            <Button label="Select Locations" onClick={handleClick} />
-            <Confirm
-                isOpen={open}
-                loading={loading}
-                title="Select Locations"
-                content="Are you sure these are the locations you want?"
-                onConfirm={handleConfirm}
-                onClose={handleDialogClose}
-            />
+
         </Fragment>
     );
 }
 
 export default SelectLocationsButton;
+
+// <Button label="Select Locations" onClick={handleClick} />
+// <Confirm
+//     isOpen={open}
+//     loading={loading}
+//     title="Select Locations"
+//     content="Are you sure these are the locations you want?"
+//     onConfirm={handleConfirm}
+//     onClose={handleDialogClose}
+// />
