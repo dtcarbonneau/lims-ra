@@ -9,7 +9,11 @@ const App = () => (
           <Resource name="users" />
           <Resource name="projects" />
           <Resource name="s_status" />
+<<<<<<< HEAD
           <Resource name = "get_avail_store" />
+=======
+          <Resource name="get_avail_store" />
+>>>>>>> 314a2198a2184ddc133278ff5765a18ccf92d4cc
       </Admin>
   );
 

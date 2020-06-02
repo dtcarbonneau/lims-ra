@@ -222,6 +222,7 @@ const postSamples = async (req, res) => {
 }
 
 const getSampleStore = async (req, res) => {
+  console.log('getSampleStore Called');
   const {rows} =  await query(
     sql`SELECT * from get_avail_store()`);
   res.send(rows);
