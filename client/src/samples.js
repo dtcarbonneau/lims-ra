@@ -4,6 +4,9 @@ import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create} from 'react-admin';
 import ShipSampButton from './ShipSampButton';
+import InsertSamplesButton from './SelectLocationsButton.js';
+import { Field } from 'react-final-form';
+
 //import InsertManyButton from './InsertMany';
 
 const SamplesFilter = (props) => (
@@ -25,6 +28,12 @@ const SamplesBulkActionButtons = props => (
     </Fragment>
 );
 
+const InsertSamplesBulkActionButtons = props => (
+    <Fragment>
+        <InsertSamplesButton label="Choose Samples" {...props} component="input"/>
+    </Fragment>
+);
+
 export const SampleCreate = props => (
     <Create {...props}>
          <SimpleForm>
@@ -37,13 +46,11 @@ export const SampleCreate = props => (
            <ReferenceInput source="p_id" reference="projects" label="Projects">
              <SelectInput optionText="p_name" />
            </ReferenceInput>
-           <TextInput source="loc" label="Location"/>
            <DateInput source="date_cryo" label="Cryo Date" />
            <DateInput source="date_exp" label="Expiration Date"/>
-           <Resource name="get_avail_store" list={AvailStoreList}/>
+           <Resource source="locs" name="get_avail_store" list={AvailStoreList}/>
          </SimpleForm>
     </Create>
-
 );
 
 export const SampleEdit = props => (
@@ -75,7 +82,6 @@ export const SampleList = props => (
             <ReferenceField source="p_id" reference="projects">
                 <TextField source="p_name" label="Project" />
             </ReferenceField>
-            <TextField source="loc" />
             <DateField source="date_cryo" />
             <DateField source="date_exp" />
             <EditButton/>
@@ -84,7 +90,7 @@ export const SampleList = props => (
 );
 
 export const AvailStoreList = props => (
-    <List {...props}>
+    <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons />} >
         <Datagrid>
             <TextField source="id" />
             <TextField source="freezer"/>
