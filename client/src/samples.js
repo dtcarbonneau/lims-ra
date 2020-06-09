@@ -1,7 +1,7 @@
 // in src/users.js
 import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
-        ReferenceInput, SelectInput, NumberField, DateField, EditButton,
+        ReferenceInput, SelectInput, NumberField, DateField, EditButton, FormDataConsumer,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create} from 'react-admin';
 import ShipSampButton from './ShipSampButton';
 import InsertSamplesButton from './SelectLocationsButton.js';
@@ -36,19 +36,23 @@ const InsertSamplesBulkActionButtons = props => (
 
 export const SampleCreate = props => (
     <Create {...props}>
-         <SimpleForm>
-           <ReferenceInput source="u_id" reference="users" label="User">
-             <SelectInput optionText="last_name" />
-           </ReferenceInput>
-           <ReferenceInput source="ss_id" reference="s_status" label="Status">
-             <SelectInput optionText="ss_name" />
-           </ReferenceInput>
-           <ReferenceInput source="p_id" reference="projects" label="Projects">
-             <SelectInput optionText="p_name" />
-           </ReferenceInput>
-           <DateInput source="date_cryo" label="Cryo Date" />
-           <DateInput source="date_exp" label="Expiration Date"/>
-           <Resource source="locs" name="get_avail_store" list={AvailStoreList}/>
+        <SimpleForm>
+            <ReferenceInput source="u_id" reference="users" label="User">
+                <SelectInput optionText="last_name" />
+            </ReferenceInput>
+            <ReferenceInput source="ss_id" reference="s_status" label="Status">
+                <SelectInput optionText="ss_name" />
+            </ReferenceInput>
+            <ReferenceInput source="p_id" reference="projects" label="Projects">
+                <SelectInput optionText="p_name" />
+            </ReferenceInput>
+            <DateInput source="date_cryo" label="Cryo Date" />
+            <DateInput source="date_exp" label="Expiration Date"/>
+            <FormDataConsumer>
+                {({ formData, ...rest }) =>
+                    <Resource source="locs" name="get_avail_store" list={AvailStoreList}/>}
+            </FormDataConsumer>
+           
          </SimpleForm>
     </Create>
 );
@@ -89,8 +93,17 @@ export const SampleList = props => (
     </List>
 );
 
+
+
+const ISBAButton = props => (
+    <Fragment>
+        <TextInput source="Ids of Locations Chosen" value={props.selectedIds}/>
+    </Fragment>
+);
+
+
 export const AvailStoreList = props => (
-    <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons />} >
+    <List {...props} bulkActionButtons={<ISBAButton />} >
         <Datagrid>
             <TextField source="id" />
             <TextField source="freezer"/>
