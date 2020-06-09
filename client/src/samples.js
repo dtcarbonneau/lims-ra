@@ -2,7 +2,9 @@
 import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
-        Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create} from 'react-admin';
+        Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create,
+        FormDataConsumer} from 'react-admin';
+// import RichTextInput from 'ra-input-rich-text';
 import ShipSampButton from './ShipSampButton';
 import InsertSamplesButton from './SelectLocationsButton.js';
 import { Field } from 'react-final-form';
@@ -34,6 +36,34 @@ const InsertSamplesBulkActionButtons = props => (
     </Fragment>
 );
 
+
+const manipulateSampleInput = (stringSamples, dups) => {
+    if (stringSamples.length > 1){
+    // store samples by updating state variable
+    let samps = stringSamples.split(" ");
+
+    let chunked_arr = [];
+    let size = 10
+      let index = 0;
+      while (index < samps.length) {
+        let array_chunk = samps.slice(index, size + index);
+        let cps = dups;
+        let copied_array = [];
+
+        while (cps > 0){
+          copied_array = copied_array.concat(array_chunk);
+          cps = cps - 1;
+        }
+        index += size;
+        chunked_arr = chunked_arr.concat(copied_array);
+      }
+      return chunked_arr;
+    }
+    else {
+      return "";
+    }
+  }
+
 export const SampleCreate = props => (
     <Create {...props}>
          <SimpleForm>
@@ -46,6 +76,16 @@ export const SampleCreate = props => (
            <ReferenceInput source="p_id" reference="projects" label="Projects">
              <SelectInput optionText="p_name" />
            </ReferenceInput>
+           <NumberInput source="dups" />
+           <FormDataConsumer>
+             {({ formData, ...rest }) =>
+                <TextInput
+                  source="samp_list"
+                  label="Sample List"
+                  parse={samps => manipulateSampleInput(samps, formData.dups)}
+                  {...rest}
+              />}
+           </FormDataConsumer>
            <DateInput source="date_cryo" label="Cryo Date" />
            <DateInput source="date_exp" label="Expiration Date"/>
            <Resource source="locs" name="get_avail_store" list={AvailStoreList}/>
