@@ -306,8 +306,9 @@ const postSamples = async (req, res) => {
 
 const getSampleStore = async (req, res) => {
   console.log('getSampleStore Called');
+  const filter = JSON.parse(req.query.filter).myCustomAttr;
   const {rows} =  await query(
-    sql`SELECT * from get_avail_store()`);
+    sql`SELECT * FROM get_avail_store(${filter})`);
   res.send(rows);
 
 }

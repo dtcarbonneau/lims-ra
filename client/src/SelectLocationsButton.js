@@ -13,6 +13,7 @@ import {
 import { Field } from 'react-final-form';
 
 const InsertSamplesButton = (props) => {
+  console.log(props);
 
     return (
           <span>
