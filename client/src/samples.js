@@ -66,7 +66,7 @@ const manipulateSampleInput = (stringSamples, dups) => {
 
 export const SampleCreate = props => (
     <Create {...props}>
-         <SimpleForm>
+         <SimpleForm >
            <ReferenceInput source="u_id" reference="users" label="User">
              <SelectInput optionText="last_name" />
            </ReferenceInput>
@@ -88,7 +88,17 @@ export const SampleCreate = props => (
            </FormDataConsumer>
            <DateInput source="date_cryo" label="Cryo Date" />
            <DateInput source="date_exp" label="Expiration Date"/>
-           <Resource source="locs" name="get_avail_store" list={AvailStoreList}/>
+           <FormDataConsumer>
+             {({ formData, ...rest }) =>
+              formData.dups &&
+               <Resource
+                source="locs"
+                name="get_avail_store"
+                list={AvailStoreList}
+                options={{ myCustomAttr: formData.dups }}
+               {...rest}
+             />}
+    </FormDataConsumer>
          </SimpleForm>
     </Create>
 );
@@ -139,7 +149,7 @@ const ISBAButton = props => (
 
 
 export const AvailStoreList = props => (
-    <List {...props} bulkActionButtons={<ISBAButton />} >
+    <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons />} filter={{myCustomAttr:props.options.myCustomAttr}}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="freezer"/>

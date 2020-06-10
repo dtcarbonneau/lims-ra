@@ -6,6 +6,8 @@ const httpClient = fetchUtils.fetchJson;
 
 export default {
     getList: (resource, params) => {
+        console.log("GETLIST CALLED");
+        console.log('getlist params', params);
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
@@ -14,6 +16,7 @@ export default {
             filter: JSON.stringify(params.filter),
         };
         console.log(query);
+
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         return httpClient(url).then(({ headers, json }) => ({
@@ -45,6 +48,7 @@ export default {
     },
 
     getManyReference: (resource, params) => {
+        console.log("getMany Reference called");
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
