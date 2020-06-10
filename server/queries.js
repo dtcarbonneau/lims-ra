@@ -35,6 +35,64 @@ const getProjects = async (req, res) => {
   res.send(rows);
 }
 
+const postProject = async (req, res) => {
+
+  const proj = req.body;
+  const columns = [];
+  const values = [];
+
+  console.log('Project Name', proj);
+  if (proj.p_name !== undefined) {
+    columns.push(
+      sql`p_name`)
+    values.push(
+      sql`${proj.p_name}`)
+  }
+
+  if (proj.u_id !== undefined) {
+    columns.push(
+      sql`u_id`)
+    values.push(
+      sql`${proj.u_id}`)
+  }
+
+  if (proj.t_name !== undefined) {
+    columns.push(
+      sql`t_name`)
+    values.push(
+      sql`${proj.t_name}`)
+  }
+
+  if (proj.samp_type !== undefined) {
+    columns.push(
+      sql`samp_type`)
+    values.push(
+      sql`${proj.samp_type}`)
+  }
+
+  if (proj.inv_date !== undefined) {
+    columns.push(
+      sql`inv_date`)
+    values.push(
+      sql`${proj.inv_date}`)
+  }
+
+  if (proj.sto_terms !== undefined) {
+    columns.push(
+      sql`sto_terms`)
+    values.push(
+      sql`${proj.sto_terms}`)
+  }
+
+  const columnsj = sql.join(columns,sql` , `);
+
+  const valuesj = sql.join(values,sql` , `);
+
+  const {rows} =  await query(
+    sql`INSERT INTO projects (${columnsj}) VALUES (${valuesj});`);
+  res.send(rows);
+}
+
 //Users
 const getUsers = async (req, res) => {
   const booleanExpressions = [
@@ -55,6 +113,42 @@ const getUsers = async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Content-Range",'bytes:0-9/9');
+  res.send(rows);
+}
+
+const postUser = async (req, res) => {
+
+  const user = req.body;
+  const columns = [];
+  const values = [];
+
+  if (user.first_name !== undefined) {
+    columns.push(
+      sql`first_name`)
+    values.push(
+      sql`${user.first_name}`)
+  }
+
+  if (user.last_name !== undefined) {
+    columns.push(
+      sql`last_name`)
+    values.push(
+      sql`${user.last_name}`)
+  }
+
+  if (user.email !== undefined) {
+    columns.push(
+      sql`email`)
+    values.push(
+      sql`${user.email}`)
+  }
+
+  const columnsj = sql.join(columns,sql` , `);
+
+  const valuesj = sql.join(values,sql` , `);
+
+  const {rows} =  await query(
+    sql`INSERT INTO users (${columnsj}) VALUES (${valuesj});`);
   res.send(rows);
 }
 
@@ -149,9 +243,6 @@ const putSamples = async (req, res) => {
 
   const {rows} =  await query(
     sql`UPDATE samples SET ${columnsj} WHERE ${condition};`);
-  //res.setHeader("Access-Control-Expose-Headers", "Content-Range");
-  //res.setHeader("Access-Control-Allow-Origin", "*");
-  //res.setHeader("Content-Range",'bytes:0-9/9');
   res.send(rows);
 }
 
@@ -194,9 +285,6 @@ const postSamples = async (req, res) => {
     columns.push(
       sql`p_id`)
     values.push(
-// <<<<<<< HEAD
-//       sql`${sample_id}`)
-// =======
       sql`${sample.p_id}`)
   }
 
@@ -210,11 +298,6 @@ const postSamples = async (req, res) => {
   const columnsj = sql.join(columns,sql` , `);
 
   const valuesj = sql.join(values,sql` , `);
-  console.log('values', valuesj)
-
-  console.log(sql`INSERT INTO samples (${columnsj}) VALUES (${valuesj});`);
-
-  console.log(sql`INSERT INTO samples (${columnsj}) VALUES (${valuesj});`);
 
   const {rows} =  await query(
     sql`INSERT INTO samples (${columnsj}) VALUES (${valuesj});`);
@@ -229,4 +312,4 @@ const getSampleStore = async (req, res) => {
 
 }
 
- export {getSamples, getSStatus, getUsers, getProjects, putSamples, getSample, postSamples, getSampleStore };
+ export {getSamples, getSStatus, getUsers, postUser, getProjects, putSamples, getSample, postSamples, getSampleStore, postProject};
