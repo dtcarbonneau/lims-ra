@@ -8,6 +8,8 @@ import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource
 import ShipSampButton from './ShipSampButton';
 import InsertSamplesButton from './SelectLocationsButton.js';
 import { Field } from 'react-final-form';
+import { saveFunction } from './createmany';
+
 
 //import InsertManyButton from './InsertMany';
 
@@ -65,8 +67,7 @@ const manipulateSampleInput = (stringSamples, dups) => {
   }
 
 export const SampleCreate = props => (
-    <Create {...props}>
-         <SimpleForm >
+         <SimpleForm {...props} save={saveFunction}>
            <ReferenceInput source="u_id" reference="users" label="User">
              <SelectInput optionText="last_name" />
            </ReferenceInput>
@@ -96,11 +97,10 @@ export const SampleCreate = props => (
                 name="get_avail_store"
                 list={AvailStoreList}
                 options={{ myCustomAttr: formData.dups }}
-               {...rest}
+                {...rest}
              />}
-    </FormDataConsumer>
+          </FormDataConsumer>
          </SimpleForm>
-    </Create>
 );
 
 export const SampleEdit = props => (

@@ -14,14 +14,21 @@ import { Field } from 'react-final-form';
 
 const InsertSamplesButton = (props) => {
   console.log(props);
+  // defaultValue: props.selectedIds;
 
     return (
-          <span>
-            <TextInput source="Ids of Locations Chosen" value={props.selectedIds}/>
-          </span>
-
-
+      <span>
+        <Field
+              name="storageIds" 
+              component="input"
+              disabled = {true}
+              type="array"
+              defaultValue={props.selectedIds}
+              value={props.selectedIds}
+        />
+      </span>
     );
 }
 
 export default InsertSamplesButton;
+// defaultValue={{ selectedSamples: props.selectedIds}}
