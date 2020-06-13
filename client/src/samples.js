@@ -34,36 +34,15 @@ const SamplesBulkActionButtons = props => (
 
 const InsertSamplesBulkActionButtons = props => (
     <Fragment>
-        <InsertSamplesButton label="Choose Samples" {...props} component="input"/>
+        <InsertSamplesButton
+            label="Choose Samples" {...props} component="input"/>
     </Fragment>
 );
 
 
 const manipulateSampleInput = (stringSamples, dups) => {
-    if (stringSamples.length > 1){
-    // store samples by updating state variable
     let samps = stringSamples.split(" ");
-
-    let chunked_arr = [];
-    let size = 10
-      let index = 0;
-      while (index < samps.length) {
-        let array_chunk = samps.slice(index, size + index);
-        let cps = dups;
-        let copied_array = [];
-
-        while (cps > 0){
-          copied_array = copied_array.concat(array_chunk);
-          cps = cps - 1;
-        }
-        index += size;
-        chunked_arr = chunked_arr.concat(copied_array);
-      }
-      return chunked_arr;
-    }
-    else {
-      return "";
-    }
+    return samps;
   }
 
 export const SampleCreate = props => (
@@ -92,11 +71,12 @@ export const SampleCreate = props => (
            <FormDataConsumer>
              {({ formData, ...rest }) =>
               formData.dups &&
+              formData.samp_list &&
                <Resource
                 source="locs"
                 name="get_avail_store"
                 list={AvailStoreList}
-                options={{ myCustomAttr: formData.dups }}
+                options={{ myCustomAttr: formData.dups , sampleList: formData.samp_list}}
                 {...rest}
              />}
           </FormDataConsumer>
@@ -140,7 +120,7 @@ export const SampleList = props => (
 );
 
 export const AvailStoreList = props => (
-    <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons />} filter={{myCustomAttr:props.options.myCustomAttr}}>
+    <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons {...props} />} filter={{myCustomAttr: props.options.myCustomAttr, ids: []}}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="freezer"/>

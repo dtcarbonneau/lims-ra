@@ -19,6 +19,8 @@
     "pg": "^8.1.0",
     "prop-types": "^15.7.2",
     "react-admin": "^3.5.2",
+    "react-native": "^0.62.2",
+    "react-native-elements": "^2.0.2",
     "slonik": "^22.4.8"
   },
   "devDependencies": {
