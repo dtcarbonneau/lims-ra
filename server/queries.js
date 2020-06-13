@@ -117,7 +117,7 @@ const getUsers = async (req, res) => {
 }
 
 const postUser = async (req, res) => {
-
+  console.log('POSTUSER CALLED');
   const user = req.body;
   const columns = [];
   const values = [];
@@ -146,7 +146,8 @@ const postUser = async (req, res) => {
   const columnsj = sql.join(columns,sql` , `);
 
   const valuesj = sql.join(values,sql` , `);
-
+  console.log('valuesj', valuesj);
+  console.log(sql`INSERT INTO users (${columnsj}) VALUES (${valuesj});`);
   const {rows} =  await query(
     sql`INSERT INTO users (${columnsj}) VALUES (${valuesj});`);
   res.send(rows);
@@ -252,7 +253,6 @@ const postSamples = async (req, res) => {
   const columns = [];
   const values = [];
 
-  console.log('sample', sample);
   if (sample.ss_id !== undefined) {
     columns.push(
       sql`ss_id`)
@@ -298,18 +298,34 @@ const postSamples = async (req, res) => {
   const columnsj = sql.join(columns,sql` , `);
 
   const valuesj = sql.join(values,sql` , `);
-
+  console.log('valuesj', valuesj);
   const {rows} =  await query(
     sql`INSERT INTO samples (${columnsj}) VALUES (${valuesj});`);
   res.send(rows);
 }
 
 const getSampleStore = async (req, res) => {
-  console.log('getSampleStore Called');
   const filter = JSON.parse(req.query.filter).myCustomAttr;
-  const {rows} =  await query(
-    sql`SELECT * FROM get_avail_store(${filter})`);
-  res.send(rows);
+  let ids = JSON.parse(req.query.filter).ids;
+
+  if (ids.length > 0 ) {
+    let idVals = [];
+    for (const i of ids){
+      idVals.push(
+            sql`${i}`)
+    }
+    const ids_filter = sql.join(idVals,sql` , `);
+    console.log(sql`SELECT * FROM get_avail_store(${filter}) WHERE id IN (${ids_filter})`);
+
+    const {rows} =  await query(
+      sql`SELECT * FROM get_avail_store(${filter}) WHERE id IN (${ids_filter})`);
+    res.send(rows);
+  }
+  else {
+      const {rows} =  await query(
+        sql`SELECT * FROM get_avail_store(${filter})`);
+      res.send(rows);
+  }
 
 }
 
