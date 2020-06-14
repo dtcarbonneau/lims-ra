@@ -326,7 +326,6 @@ const getSampleStore = async (req, res) => {
         sql`SELECT * FROM get_avail_store(${filter})`);
       res.send(rows);
   }
-
 }
 
  export {getSamples, getSStatus, getUsers, postUser, getProjects, putSamples, getSample, postSamples, getSampleStore, postProject};

@@ -119,15 +119,6 @@ export const SampleList = props => (
     </List>
 );
 
-
-
-const ISBAButton = props => (
-    <Fragment>
-        <TextInput source="Ids of Locations Chosen" value={props.selectedIds}/>
-    </Fragment>
-);
-
-
 export const AvailStoreList = props => (
     <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons {...props} />} filter={{myCustomAttr: props.options.myCustomAttr, ids: []}}>
         <Datagrid>
