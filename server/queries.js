@@ -335,8 +335,7 @@ const putSamples = async (req, res) => {
   res.send(rows);
 }
 
-
-//////POST SAMPLES
+//POST SAMPLES
 const postSamples = async (req, res) => {
   console.log('POSTSAMPLES CALLED');
   

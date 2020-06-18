@@ -4,12 +4,6 @@ const props = {"u_id":3,"ss_id":-1,"p_id":5,"dups":3,"samp_list":["s1","s2","s3"
 const SaveFunction = (props) => {  
   //const {u_id, ss_id, p_id, dups, samp_list, storageIds} = props;
 
-  const store_start = [
-    {'id':1, 'first_cell': "000100", 'slot_size':30},
-    {'id':2, 'first_cell': '010000', 'slot_size':60},
-    {'id':3, 'first_cell': '010160', 'slot_size':30}
-  ]
-
   const makeStorage = (store_start,dups) => {
     console.log(store_start);
     //stor_start is an array of record objects returned from the dataProvider
