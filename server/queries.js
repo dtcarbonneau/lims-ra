@@ -5,6 +5,59 @@ const pool = createPool('postgresql://limsuser:limspw@localhost:5433/lims');
 
 var query = (q) => pool.query(q)
 
+
+const postLogin = async (req, res) => {
+  console.log('POSTUSER CALLED');
+
+  const bools = [
+    sql`TRUE`,
+  ];
+
+  const user = req.body;
+
+  // Username
+  if (user.username !== undefined) {
+    bools.push(
+      sql`username = ${user.username}`)
+  }
+  else{
+    res.status(401);
+    res.send('Must provide both username and password');
+  }
+
+  // Password
+  if (user.password !== undefined) {
+    bools.push(
+      sql`password = ${user.password}`)
+  }
+  else{
+    res.status(401);
+    res.send('Must provide both username and password');
+  }
+
+  const {rows} =  await query(
+    sql`SELECT * FROM users WHERE ${sql.join(bools, sql` AND `)}`);
+
+  if (rows.length < 1) {
+    console.log('FAILED RESPONSE');
+    res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Content-Range",'bytes:0-9/9');
+    res.send(401);
+    console.log(res.status);
+
+  }
+  else{
+    res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Content-Range",'bytes:0-9/9');
+    res.send(rows);
+    res.status(200);
+
+  }
+
+}
+
 //Projects
 const getProjects = async (req, res) => {
   const booleanExpressions = [
@@ -142,12 +195,22 @@ const postUser = async (req, res) => {
     values.push(
       sql`${user.email}`)
   }
+  if (user.username !== undefined) {
+    columns.push(
+      sql`username`)
+    values.push(
+      sql`${user.username}`)
+  }
+  if (user.password !== undefined) {
+    columns.push(
+      sql`password`)
+    values.push(
+      sql`${user.password}`)
+  }
 
   const columnsj = sql.join(columns,sql` , `);
 
   const valuesj = sql.join(values,sql` , `);
-  console.log('valuesj', valuesj);
-  console.log(sql`INSERT INTO users (${columnsj}) VALUES (${valuesj});`);
   const {rows} =  await query(
     sql`INSERT INTO users (${columnsj}) VALUES (${valuesj});`);
   res.send(rows);
@@ -189,32 +252,57 @@ const getSample = async (req, res) => {
 
 const getSamples = async (req, res) => {
   console.log('GETSAMPLES CALLED');
+
   const booleanExpressions = [
     sql`TRUE`,
   ];
+  console.log('195');
   if (req.query.filter) {
     const queryString = JSON.parse(req.query.filter);
+    console.log(queryString);
     if (queryString.id !== undefined) {
       booleanExpressions.push(
         sql`id = ANY(${sql.array(queryString.id, 'int4')})
       `);
       }
       //filter for user...
+    console.log('204');
     if (queryString.u_id !== undefined) {
       booleanExpressions.push(
         sql`u_id = ${queryString.u_id}
       `);
       //filter for project...
     }
+    console.log(queryString);
     if (queryString.p_id !== undefined) {
       booleanExpressions.push(
         sql`p_id = ${queryString.p_id}
       `);
     }
+    if (queryString.ss_id!== undefined) {
+      booleanExpressions.push(
+        sql`ss_id = ${queryString.ss_id}
+      `);
+    }
   }
-
+  console.log('218');
+  // console.log(`SELECT * FROM samples WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
   const {rows} =  await query(
     sql`SELECT * FROM samples WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
+  res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Content-Range",'bytes:0-9/9');
+  res.send(rows);
+}
+
+const getBoxSamples = async (req, res) => {
+  const queryString = JSON.parse(req.query.filter);
+
+  const {rows} =  await query(
+  sql`SELECT * FROM samples
+  WHERE substring(loc,3,2) in (SELECT SUBSTRING(loc, 3, 2) AS ExtractString
+  FROM samples WHERE p_id = ${queryString.p_id}) AND ss_id = 1`);
+
   res.setHeader("Access-Control-Expose-Headers", "Content-Range");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Content-Range",'bytes:0-9/9');
@@ -328,4 +416,29 @@ const getSampleStore = async (req, res) => {
   }
 }
 
- export {getSamples, getSStatus, getUsers, postUser, getProjects, putSamples, getSample, postSamples, getSampleStore, postProject};
+const deleteRows = async (req, res) => {
+  console.log(req.query);
+  // const filter = JSON.parse(req.query.filter).myCustomAttr;
+  // let ids = JSON.parse(req.query.filter).ids;
+  //
+  // if (ids.length > 0 ) {
+  //   let idVals = [];
+  //   for (const i of ids){
+  //     idVals.push(
+  //           sql`${i}`)
+  //   }
+  //   const ids_filter = sql.join(idVals,sql` , `);
+  //   console.log(sql`SELECT * FROM get_avail_store(${filter}) WHERE id IN (${ids_filter})`);
+  //
+  //   const {rows} =  await query(
+  //     sql`SELECT * FROM get_avail_store(${filter}) WHERE id IN (${ids_filter})`);
+  //   res.send(rows);
+  // }
+  // else {
+  //     const {rows} =  await query(
+  //       sql`SELECT * FROM get_avail_store(${filter})`);
+  //     res.send(rows);
+  // }
+}
+
+ export {getSamples, deleteRows, getBoxSamples, getSStatus, getUsers, postUser, postLogin, getProjects, putSamples, getSample, postSamples, getSampleStore, postProject};

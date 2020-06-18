@@ -1,18 +1,29 @@
-import React from 'react';
-import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
+import React, { createElement } from 'react';
+import { Admin, Resource, ListGuesser, EditGuesser, Login} from 'react-admin';
 import dataProvider from './limsDataProvider';
 import {SampleList, SampleEdit, SampleCreate} from './samples'
 import {ProjectList, ProjectCreate} from './projects'
 import {UserList, UserCreate} from './users'
+import customRoutes from './customRoutes';
+import { Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+import { MenuItemLink, getResources } from 'react-admin';
+import { withRouter } from 'react-router-dom';
+import LabelIcon from '@material-ui/icons/Label';
+import MyLayout from './MyLayout';
+import {authProvider} from "./authProvider";
 
 const App = () => (
-      <Admin dataProvider={dataProvider}>
-          <Resource name="samples" list={SampleList} edit={SampleEdit} create={SampleCreate}/>
-          <Resource name="users" list={UserList} create={UserCreate} />
-          <Resource name="projects" list={ProjectList} create={ProjectCreate}/>
-          <Resource name="s_status" />
-          <Resource name="get_avail_store" />
+      <Admin appLayout={MyLayout} customRoutes={customRoutes} dataProvider={dataProvider}  authProvider={authProvider}  >
+        <Resource name="samples" list={SampleList} edit={SampleEdit} create={SampleCreate}/>
+        <Resource name="users" list={UserList} create={UserCreate} />
+        <Resource name="projects" list={ProjectList} create={ProjectCreate}/>
+        <Resource name="s_status" />
+        <Resource name="get_avail_store" />
       </Admin>
+
+
   );
 
-  export default App;
+export default App;
