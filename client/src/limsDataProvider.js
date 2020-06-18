@@ -16,7 +16,6 @@ export default {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        console.log(query);
 
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
@@ -91,7 +90,8 @@ export default {
         return httpClient(`${apiUrl}/${resource}`, {
               method: 'POST',
               body: JSON.stringify(params.data),
-              }).then(({ json }) => ({
+              })
+              .then(({ json }) => ({
                   data: { ...params.data, id: json.id },
               }))},
     
@@ -112,6 +112,7 @@ export default {
         }).then(({ json }) => ({ data: json })),
 
     deleteMany: (resource, params) => {
+        console.log('Delete Many Called');
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };

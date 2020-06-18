@@ -3,14 +3,23 @@ import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create,
+<<<<<<< HEAD
         SaveButton, Toolbar,
         FormDataConsumer} from 'react-admin';
+=======
+        FormDataConsumer, Toolbar} from 'react-admin';
+>>>>>>> bebb12627fe37482a0c8abe1335c56aefd38a9ee
 // import RichTextInput from 'ra-input-rich-text';
 import ShipSampButton from './ShipSampButton';
 import InsertSamplesButton from './SelectLocationsButton.js';
 import { Field } from 'react-final-form';
+<<<<<<< HEAD
 import SaveFunction from './SaveFunction';
 
+=======
+import { saveFunction } from './createmany';
+//import InsertManyButton from './InsertMany';
+>>>>>>> bebb12627fe37482a0c8abe1335c56aefd38a9ee
 
 const SamplesFilter = (props) => (
     <Filter {...props}>
@@ -19,6 +28,9 @@ const SamplesFilter = (props) => (
         </ReferenceInput>
         <ReferenceInput label="Project" source="p_id" reference="projects">
             <SelectInput optionText="p_name" />
+        </ReferenceInput>
+        <ReferenceInput label="Status" source="ss_id" reference="s_status">
+            <SelectInput optionText="ss_name" />
         </ReferenceInput>
     </Filter>
 );
@@ -48,7 +60,12 @@ const manipulateSampleInput = (stringSamples, dups) => {
 
 
 export const SampleCreate = props => (
+<<<<<<< HEAD
          <SimpleForm {...props} save = {SaveFunction}>
+=======
+         <SimpleForm {...props} save={saveFunction}>
+            {console.log('SampleCreate', props)}
+>>>>>>> bebb12627fe37482a0c8abe1335c56aefd38a9ee
            <ReferenceInput source="u_id" reference="users" label="User">
              <SelectInput optionText="last_name" />
            </ReferenceInput>
@@ -68,6 +85,16 @@ export const SampleCreate = props => (
                   {...rest}
               />}
            </FormDataConsumer>
+           <FormDataConsumer>
+             {({ formData, ...rest }) =>
+                 formData.dups &&
+                 formData.samp_list &&
+                <Fragment>
+                  <p>
+                    Slots needed for Storage: {Math.ceil(formData.samp_list.length  / 10) * 10 * formData.dups }
+                  </p>
+              </Fragment>}
+           </FormDataConsumer>
            <DateInput source="date_cryo" label="Cryo Date" />
            <DateInput source="date_exp" label="Expiration Date"/>
            <FormDataConsumer>
@@ -78,7 +105,7 @@ export const SampleCreate = props => (
                 source="locs"
                 name="get_avail_store"
                 list={AvailStoreList}
-                options={{ myCustomAttr: formData.dups , sampleList: formData.samp_list}}
+                options={{ myCustomAttr: formData.dups , sampleList: formData.samp_list, slectedIds: formData.storageIds}}
                 {...rest}
              />}
           </FormDataConsumer>
@@ -103,19 +130,19 @@ export const SampleEdit = props => (
 export const SampleList = props => (
     <List filters={<SamplesFilter/>}{...props} bulkActionButtons={<SamplesBulkActionButtons />} >
         <Datagrid>
-            <TextField source="id" />
-            <TextField source="sa_name" />
-            <ReferenceField source="u_id" reference="users">
+            <TextField source="id" label="ID" />
+            <TextField source="sa_name" label="Sample"/>
+            <ReferenceField label="User" source="u_id" reference="users">
                 <TextField source="last_name" label="Technician" />
             </ReferenceField>
-            <ReferenceField source="ss_id" reference="s_status">
+            <ReferenceField label="Status" source="ss_id" reference="s_status">
                 <TextField source="ss_name" label="Status" />
             </ReferenceField>
-            <ReferenceField source="p_id" reference="projects">
+            <ReferenceField label="Project" source="p_id" reference="projects">
                 <TextField source="p_name" label="Project" />
             </ReferenceField>
-            <DateField source="date_cryo" />
-            <DateField source="date_exp" />
+            <DateField source="date_cryo" label="Cryo Date" />
+            <DateField source="date_exp" label="Expiration Date"/>
             <EditButton/>
         </Datagrid>
     </List>
