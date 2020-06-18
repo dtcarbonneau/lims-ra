@@ -3,23 +3,13 @@ import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create,
-<<<<<<< HEAD
-        SaveButton, Toolbar,
-        FormDataConsumer} from 'react-admin';
-=======
         FormDataConsumer, Toolbar} from 'react-admin';
->>>>>>> bebb12627fe37482a0c8abe1335c56aefd38a9ee
 // import RichTextInput from 'ra-input-rich-text';
 import ShipSampButton from './ShipSampButton';
 import InsertSamplesButton from './SelectLocationsButton.js';
 import { Field } from 'react-final-form';
-<<<<<<< HEAD
-import SaveFunction from './SaveFunction';
-
-=======
 import { saveFunction } from './createmany';
 //import InsertManyButton from './InsertMany';
->>>>>>> bebb12627fe37482a0c8abe1335c56aefd38a9ee
 
 const SamplesFilter = (props) => (
     <Filter {...props}>
@@ -60,12 +50,8 @@ const manipulateSampleInput = (stringSamples, dups) => {
 
 
 export const SampleCreate = props => (
-<<<<<<< HEAD
-         <SimpleForm {...props} save = {SaveFunction}>
-=======
          <SimpleForm {...props} save={saveFunction}>
             {console.log('SampleCreate', props)}
->>>>>>> bebb12627fe37482a0c8abe1335c56aefd38a9ee
            <ReferenceInput source="u_id" reference="users" label="User">
              <SelectInput optionText="last_name" />
            </ReferenceInput>
