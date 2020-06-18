@@ -3,15 +3,14 @@ import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
         ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create,
+        SaveButton, Toolbar,
         FormDataConsumer} from 'react-admin';
 // import RichTextInput from 'ra-input-rich-text';
 import ShipSampButton from './ShipSampButton';
 import InsertSamplesButton from './SelectLocationsButton.js';
 import { Field } from 'react-final-form';
-import { saveFunction } from './createmany';
+import SaveFunction from './SaveFunction';
 
-
-//import InsertManyButton from './InsertMany';
 
 const SamplesFilter = (props) => (
     <Filter {...props}>
@@ -36,17 +35,20 @@ const InsertSamplesBulkActionButtons = props => (
     <Fragment>
         <InsertSamplesButton
             label="Choose Samples" {...props} component="input"/>
+        <BulkDeleteButton{...props}/>
     </Fragment>
 );
 
-
+//Simple Form
 const manipulateSampleInput = (stringSamples, dups) => {
     let samps = stringSamples.split(" ");
     return samps;
   }
 
+
+
 export const SampleCreate = props => (
-         <SimpleForm {...props} save={saveFunction}>
+         <SimpleForm {...props} save = {SaveFunction}>
            <ReferenceInput source="u_id" reference="users" label="User">
              <SelectInput optionText="last_name" />
            </ReferenceInput>
@@ -119,8 +121,12 @@ export const SampleList = props => (
     </List>
 );
 
+
+
+
 export const AvailStoreList = props => (
-    <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons {...props} />} filter={{myCustomAttr: props.options.myCustomAttr, ids: []}}>
+    <List {...props} bulkActionButtons={<InsertSamplesBulkActionButtons {...props} />} filter={{myCustomAttr: props.options.myCustomAttr, ids: []}}
+    title="Available Storage">
         <Datagrid>
             <TextField source="id" />
             <TextField source="freezer"/>

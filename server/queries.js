@@ -247,61 +247,18 @@ const putSamples = async (req, res) => {
   res.send(rows);
 }
 
+
+//////POST SAMPLES
 const postSamples = async (req, res) => {
+  console.log('POSTSAMPLES CALLED');
+  
+  const inserts=(sql.unnest(req.body,['text','int4','int4','int4', 'text']));
+  console.log(inserts);
 
-  const sample = req.body;
-  const columns = [];
-  const values = [];
-
-  if (sample.ss_id !== undefined) {
-    columns.push(
-      sql`ss_id`)
-    values.push(
-      sql`${sample.ss_id}`)
-  }
-
-  if (sample.date_cryo !== undefined) {
-    columns.push(
-      sql`date_cryo`)
-    values.push(
-      sql`${sample.date_cryo}`)
-  }
-
-  if (sample.date_exp !== undefined) {
-    columns.push(
-      sql`date_exp`)
-    values.push(
-      sql`${sample.date_exp}`)
-  }
-
-  if (sample.loc !== undefined) {
-    columns.push(
-      sql`loc`)
-    values.push(
-      sql`${sample.loc}`)
-  }
-
-  if (sample.p_id !== undefined) {
-    columns.push(
-      sql`p_id`)
-    values.push(
-      sql`${sample.p_id}`)
-  }
-
-  if (sample.u_id !== undefined) {
-    columns.push(
-      sql`u_id`)
-    values.push(
-      sql`${sample.u_id}`)
-  }
-
-  const columnsj = sql.join(columns,sql` , `);
-
-  const valuesj = sql.join(values,sql` , `);
-  console.log('valuesj', valuesj);
   const {rows} =  await query(
-    sql`INSERT INTO samples (${columnsj}) VALUES (${valuesj});`);
-  res.send(rows);
+     sql`INSERT INTO samples (sa_name, u_id, ss_id, p_id, loc)
+     SELECT * FROM ${inserts}`);
+     res.send(rows);
 }
 
 const getSampleStore = async (req, res) => {

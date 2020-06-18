@@ -12,6 +12,7 @@ export default {
         const { field, order } = params.sort;
         const query = {
             sort: JSON.stringify([field, order]),
+            method: 'GET',
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
@@ -75,7 +76,6 @@ export default {
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }))},
 
-
     updateMany: (resource, params) => {
         params.data['ids'] = params.ids;
 
@@ -94,6 +94,17 @@ export default {
               }).then(({ json }) => ({
                   data: { ...params.data, id: json.id },
               }))},
+    
+    createMany: (resource, params) =>{
+        console.log("CREATE MANY called");
+        console.log(params);
+        return httpClient(`${apiUrl}/${resource}`, {
+                method: 'POST',
+                body: JSON.stringify(params.data),
+                //headers: { "Content-Type": "application/json" }
+                }).then(({ json }) => ({
+                    data: { ...params.data, id: json.id },
+                }))},          
 
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
