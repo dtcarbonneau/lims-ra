@@ -1,7 +1,7 @@
 import dataProvider from './limsDataProvider'
 const props = {"u_id":3,"ss_id":-1,"p_id":5,"dups":3,"samp_list":["s1","s2","s3","s4","s5","s6"],"storageIds":[2,3,4]}
 
-const SaveFunction = (props) => {  
+const SaveFunction = (props) => {
   //const {u_id, ss_id, p_id, dups, samp_list, storageIds} = props;
 
   const makeStorage = (store_start,dups) => {
@@ -16,7 +16,7 @@ const SaveFunction = (props) => {
     //out the id dimension of the array
     const tuppler = (acc, cur) => acc.concat(cur[0].map((s,index) => [s,cur[1][index]]));
     const store_start2 = store_start1.reduce(tuppler,[]);
-    
+
     //r_c_calc detemines row and column values consistent with the sequence order of the cell and
     //updates the first_cell value accordingly
     const r_c_calc = (dups) => {
@@ -32,7 +32,7 @@ const SaveFunction = (props) => {
     }
     return store_start2.map(r_c_calc(dups));
   }
-  
+
   //create array for multiple insert
   const store_samples = (props, store_start) => {
     console.log(props.samp_list);
@@ -55,7 +55,7 @@ const SaveFunction = (props) => {
         createMany('samples',
         {'fields':['sa_name','u_id','ss_id','p_id','loc'],
         'data':store_samples(props,store_start.data)}))
-      
+
       //(data => {
       //  dataProvider.
       //  createMany('get_avail_store',

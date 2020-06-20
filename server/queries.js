@@ -338,7 +338,7 @@ const putSamples = async (req, res) => {
 //POST SAMPLES
 const postSamples = async (req, res) => {
   console.log('POSTSAMPLES CALLED');
-  
+
   const inserts=(sql.unnest(req.body,['text','int4','int4','int4', 'text']));
   console.log(inserts);
 
@@ -346,6 +346,7 @@ const postSamples = async (req, res) => {
      sql`INSERT INTO samples (sa_name, u_id, ss_id, p_id, loc)
      SELECT * FROM ${inserts}`);
      res.send(rows);
+  console.log(rows);
 }
 
 const getSampleStore = async (req, res) => {
