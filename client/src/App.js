@@ -1,9 +1,10 @@
 import React, { createElement } from 'react';
 import { Admin, Resource, ListGuesser, EditGuesser, Login} from 'react-admin';
 import dataProvider from './limsDataProvider';
-import {SampleList, SampleEdit, SampleCreate} from './samples'
-import {ProjectList, ProjectCreate} from './projects'
-import {UserList, UserCreate} from './users'
+import {SampleList, SampleEdit, SampleCreate} from './samples';
+import {ProjectList, ProjectCreate, ProjectEdit} from './projects';
+import {UserList, UserCreate, UserEdit} from './users';
+import {FreezersList} from './freezers';
 import customRoutes from './customRoutes';
 import { Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -17,8 +18,9 @@ import {authProvider} from "./authProvider";
 const App = () => (
       <Admin appLayout={MyLayout} customRoutes={customRoutes} dataProvider={dataProvider}  authProvider={authProvider}  >
         <Resource name="samples" list={SampleList} edit={SampleEdit} create={SampleCreate}/>
-        <Resource name="users" list={UserList} create={UserCreate} />
-        <Resource name="projects" list={ProjectList} create={ProjectCreate}/>
+        <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
+        <Resource name="projects" list={ProjectList} edit={ProjectEdit} create={ProjectCreate} />
+        <Resource name="freezers" list={FreezersList}/>
         <Resource name="s_status" />
         <Resource name="get_avail_store" />
       </Admin>
