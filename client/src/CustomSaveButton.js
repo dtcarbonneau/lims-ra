@@ -57,7 +57,7 @@ const CustomSaveButton = props => {
     const store_samples = (props, store_start) => {
        console.log(props.samp_list);
        console.log('props', props)
-       
+
        //build aliquot list from samples using dups
        const samp_list = (props.samp_list.length>1) ? props.samp_list : props.samp_list[0].split(',');
        const aliquots = samp_list.reduce((acc, cur) => acc.concat(Array(props.dups).fill(cur)),[]);
@@ -90,26 +90,7 @@ const CustomSaveButton = props => {
           setError(error);
         })}, [redirectTo, refresh]);
      if (error) return <Error />;
-
-     // useCallback(
-      // (values, redirect) =>{ dataProvider.
-      //         getList('get_avail_store',
-      //           {filter: {"myCustomAttr": values.dups, "ids": values.storageIds},
-      //           pagination: {page: 1, perPage: 25},
-      //           sort: {field: "id", order: "DESC"}})
-      //           .then (store_start => dataProvider.
-      //             createMany('samples',
-      //             {'fields':['sa_name','u_id','ss_id','p_id','loc'],
-      //             'data':store_samples(values ,store_start.data)}))
-      //           .then(console.log(values))
-      //           .then(
-      //             unselectAll('get_avail_store'),
-      //             redirectTo(`/samples?displayedFilters=%7B"p_id"%3Atrue%7D&filter=%7B"p_id"%3A${values.p_id}%7D`),
-      //             refresh()
-      //           )
-      //
-      //       },[redirectTo, refresh]
-    // );
+     
     return <SaveButton {...props} onSave={handleSave} />;
 };
 

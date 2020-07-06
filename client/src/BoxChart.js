@@ -37,7 +37,7 @@ const BoxChart = props => {
 
   // Find Unique Boxes
   let unique_boxes = [];
-  if (data != undefined){
+  if (data !== undefined){
     data.forEach(datum => unique_boxes.push(datum.loc.slice(0, 4)));
   }
   let boxNumbers = unique_boxes.filter(onlyUnique);

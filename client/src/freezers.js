@@ -8,7 +8,7 @@ import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource
 export const FreezersList = props => (
     <List {...props} bulkActionButtons={false}>
         <Datagrid>
-            <TextField source="id" />
+            <TextField source="id" label="ID" />
             <TextField source="f_name" label="Storage Unit Name"/>
             <TextField source="temperature" label="Temperature"/>
             <TextField source="status" label="Status"/>

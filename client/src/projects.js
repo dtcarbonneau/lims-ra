@@ -10,9 +10,9 @@ const ProjectBulkActionButtons = props => (
 export const ProjectList = props => (
     <List {...props} bulkActionButtons={<ProjectBulkActionButtons />}>
         <Datagrid>
-            <TextField source="id" />
-            <TextField source="p_name" />
-            <ReferenceField source="u_id" reference="users">
+            <TextField source="id" label="ID"/>
+            <TextField source="p_name" label="Project"/>
+            <ReferenceField source="u_id" reference="users" label="User">
                 <TextField source="last_name" label="Technician" />
             </ReferenceField>
             <TextField source="t_name" label="Target Name" />

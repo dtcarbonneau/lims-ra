@@ -11,7 +11,7 @@ const UserBulkActionButtons = props => (
 export const UserList = props => (
     <List {...props} bulkActionButtons={<UserBulkActionButtons />}>
         <Datagrid>
-            <TextField source="id" />
+            <TextField source="id" label="ID"/>
             <TextField source="first_name" label="First Name"/>
             <TextField source="last_name" label="Last Name"/>
             <TextField source="email" label="Email"/>
