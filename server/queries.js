@@ -82,10 +82,10 @@ const getProjects = async (req, res) => {
 
   const {rows} =  await query(
     sql`SELECT * FROM projects WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
-  res.setHeader("Access-Control-Expose-Headers", "Content-Range");
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');
-  res.send(rows);
+    res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("X-Total-Count", rows[0].count);
+    res.send(rows);
 }
 
 const postProject = async (req, res) => {
@@ -250,50 +250,75 @@ const getSample = async (req, res) => {
   res.send(rows);
 }
 
+//SAMPLES
 const getSamples = async (req, res) => {
-  console.log('GETSAMPLES CALLED');
-
-  const booleanExpressions = [
+  console.log(req.query);
+  const filter_qs = req.query.filter ? JSON.parse(req.query.filter): null;
+  const range_qs = req.query.range ? JSON.parse(req.query.range): null;
+  // 'be' means boolean expressions
+  const filter_be = [
     sql`TRUE`,
   ];
-  console.log('195');
-  if (req.query.filter) {
-    const queryString = JSON.parse(req.query.filter);
-    console.log(queryString);
-    if (queryString.id !== undefined) {
-      booleanExpressions.push(
-        sql`id = ANY(${sql.array(queryString.id, 'int4')})
-      `);
-      }
-      //filter for user...
-    console.log('204');
-    if (queryString.u_id !== undefined) {
-      booleanExpressions.push(
-        sql`u_id = ${queryString.u_id}
-      `);
-      //filter for project...
-    }
-    console.log(queryString);
-    if (queryString.p_id !== undefined) {
-      booleanExpressions.push(
-        sql`p_id = ${queryString.p_id}
+  if (filter_qs) {
+    //flter for ids...
+    if(filter_qs.id) {
+      filter_be.push(
+      sql`id = ANY(${sql.array(filter_qs.id, 'int4')})
       `);
     }
-    if (queryString.ss_id!== undefined) {
-      booleanExpressions.push(
-        sql`ss_id = ${queryString.ss_id}
+    //filter for user...
+    if (filter_qs.u_id) {
+      filter_be.push(
+      sql`u_id = ${filter_qs.u_id}
+      `);
+    }
+    //filter for project...
+    console.log(filter_qs);
+    if (filter_qs.p_id) {
+      filter_be.push(
+        sql`p_id = ${filter_qs.p_id}
+      `);
+    }
+    //filter for sample status...
+    if (filter_qs.ss_id) {
+      filter_be.push(
+        sql`ss_id = ${filter_qs.ss_id}
       `);
     }
   }
-  console.log('218');
-  // console.log(`SELECT * FROM samples WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
+  
   const {rows} =  await query(
-    sql`SELECT * FROM samples WHERE ${sql.join(booleanExpressions,sql` AND `)}`);
-  res.setHeader("Access-Control-Expose-Headers", "Content-Range");
+    sql`SELECT *, COUNT(*) OVER() AS count FROM samples WHERE ${sql.join(filter_be,sql` AND `)} OFFSET ${range_qs[0]} 
+    LIMIT ${range_qs[1] - range_qs[0]}`);
+
+  res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Content-Range",'bytes:0-9/9');
+  res.setHeader("X-Total-Count", rows[0].count);
   res.send(rows);
 }
+//res.setHeader("Content-Range",'bytes:0-9/20');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const getBoxSamples = async (req, res) => {
   const queryString = JSON.parse(req.query.filter);

@@ -1,7 +1,7 @@
 // in src/users.js
 import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
-        ReferenceInput, SelectInput, NumberField, DateField, EditButton,
+        ReferenceInput, SelectInput, NumberField, DateField, EditButton, Pagination,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create,
         FormDataConsumer, Toolbar} from 'react-admin';
 // import RichTextInput from 'ra-input-rich-text';
@@ -114,7 +114,8 @@ export const SampleEdit = props => (
 );
 
 export const SampleList = props => (
-    <List filters={<SamplesFilter/>}{...props} bulkActionButtons={<SamplesBulkActionButtons />} >
+    <List filters={<SamplesFilter/>}{...props} bulkActionButtons={<SamplesBulkActionButtons />}
+    pagination={<Pagination rowsPerPageOptions={[10, 25, 50]} total={50} />} >
         <Datagrid>
             <TextField source="id" label="ID" />
             <TextField source="sa_name" label="Sample"/>

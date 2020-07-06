@@ -5,13 +5,11 @@ const SaveFunction = (props) => {
   //const {u_id, ss_id, p_id, dups, samp_list, storageIds} = props;
 
   const makeStorage = (store_start,dups) => {
-    console.log(store_start);
     //stor_start is an array of record objects returned from the dataProvider
     //copier takes a first_cell element and copies it slot_size times and also add an array of sequential integers
     //to represent filling order
     const copier = (acc, cur) => acc.concat([[Array(cur['slot_size']).fill(cur['first_cell']),Array.from(Array(cur['slot_size']).keys())]]);
     const store_start1 = store_start.reduce(copier,[]);
-    console.log(store_start1);
     //tuppler takes separate first_cell and sequenetial integer arrays and combines into a tupple-like structure. It also flattens
     //out the id dimension of the array
     const tuppler = (acc, cur) => acc.concat(cur[0].map((s,index) => [s,cur[1][index]]));
@@ -30,6 +28,7 @@ const SaveFunction = (props) => {
         return a[0].substring(0,4)+row+col;
       }
     }
+    console.log(store_start2.map(r_c_calc(dups)));
     return store_start2.map(r_c_calc(dups));
   }
 
@@ -37,7 +36,8 @@ const SaveFunction = (props) => {
   const store_samples = (props, store_start) => {
     console.log(props.samp_list);
     //build aliquot list from samples using dups
-    const aliquots = props.samp_list[0].split(',').reduce((acc, cur) => acc.concat(Array(props.dups).fill(cur)),[]);
+    const samp_list = (props.samp_list.length>1) ? props.samp_list : props.samp_list[0].split(',');
+    const aliquots = samp_list.reduce((acc, cur) => acc.concat(Array(props.dups).fill(cur)),[]);
     //bulid storage from start cell and slot size data
     const storage = makeStorage(store_start,props.dups);
     return aliquots.map((s,index) => [s, props.u_id, props.ss_id, props.p_id, storage[index]])
