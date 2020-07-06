@@ -16,7 +16,7 @@ const MyMenu = ({ resources, onMenuClick, logout }) => {
                   onClick={onMenuClick}
               />
           ))}
-          <MenuItemLink to="/boxmap" primaryText="Box Charts" onClick={onMenuClick} />
+          <MenuItemLink to="/boxmap" primaryText="box charts" onClick={onMenuClick} />
           <Responsive
               small={logout}
               medium={null} // Pass null to render nothing on larger devices

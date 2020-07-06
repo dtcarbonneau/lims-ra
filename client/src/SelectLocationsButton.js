@@ -11,7 +11,8 @@ import {
     useUnselectAll,
     useInput,
     addField,
-    TextInput
+    TextInput,
+    required
 } from 'react-admin';
 import { Field } from 'react-final-form';
 
@@ -19,7 +20,9 @@ const InsertSamplesButton = props => {
   // console.log(props);
   const dups = props.options.myCustomAttr;
   const sampList = props.options.sampleList;
-  const sampsToStore = Math.ceil(sampList.length  / 10) * 10 * dups;
+  console.log('sampList', sampList);
+  const slotsNeeded = (sampList.length>1) ? sampList : sampList[0].split(',');
+  const sampsToStore = Math.ceil(slotsNeeded.length  / 10) * 10 * dups;
   console.log(sampsToStore);
 
   const {data, loading, error} = useQueryWithStore({
@@ -30,7 +33,7 @@ const InsertSamplesButton = props => {
 
   let filled = 0;
   const selids = props.selectedIds;
-  if (selids.length > 0 && data != undefined){
+  if (selids.length > 0 && data !== undefined){
     data.forEach(datum => filled += datum.slot_size );
   }
 
@@ -52,10 +55,10 @@ const InsertSamplesButton = props => {
               type="array"
               defaultValue={props.selectedIds}
               value={props.selectedIds}
+              validate={required('Must select storage Ids')}
         />
       </Fragment>
     );
 }
 
 export default InsertSamplesButton;
-// defaultValue={{ selectedSamples: props.selectedIds}}

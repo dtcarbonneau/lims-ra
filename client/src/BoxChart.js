@@ -18,31 +18,30 @@ import {
 const BoxChart = props => {
 
   const proj_id = props.options;
-  // const proj_id = 1;
-  console.log(proj_id);
   const status = 1;
+
 
   const {data, loading, error} = useQueryWithStore({
     type: 'getList',
     resource: 'boxsamples',
-    payload: {filter: {"p_id": proj_id, "ss_id": status}, pagination: {page: 1, perPage: 25}, sort: {field: "id", order: "DESC"}}
+    payload: {filter: {"p_id": proj_id, "ss_id": status}, pagination: {page: 1, perPage: 1000}, sort: {field: "id", order: "DESC"}}
   });
-
+  console.log(data)
   // Helper Function to identify unique entries of array
   const onlyUnique = (value, index, self) => {
     return self.indexOf(value) === index;
   }
-  console.log(data);
 
   const xLabels = new Array(10).fill(0).map((_, i) => `${i}`);
   const yLabels =  new Array(10).fill(0).map((_, i) => `${i}`);
 
   // Find Unique Boxes
   let unique_boxes = [];
-  if (data != undefined){
-    data.forEach(datum => unique_boxes.push(datum.loc.slice(2, 4)));
+  if (data !== undefined){
+    data.forEach(datum => unique_boxes.push(datum.loc.slice(0, 4)));
   }
   let boxNumbers = unique_boxes.filter(onlyUnique);
+  console.log(boxNumbers);
   const numberOfBoxes = boxNumbers.length;
 
   const heatMaps = [];
@@ -52,7 +51,7 @@ const BoxChart = props => {
     // Get samples in the right box
     let currentBox = boxNumbers[i];
     let currentSamples = []
-    data.forEach(d => {if (d.loc.slice(2, 4) === currentBox){currentSamples.push(d)}})
+    data.forEach(d => {if (d.loc.slice(0, 4) === currentBox){currentSamples.push(d)}})
 
 
     // Initialize empty box
@@ -67,12 +66,17 @@ const BoxChart = props => {
       labels[i] = new Array(10).fill("Empty");
     }
 
+    let allProject = 0;
     // Place data in arrays
     for (const samp of currentSamples){
+      // console.log(samp);
+      // console.log(samp.p_id);
+      // console.log(proj_id);
       let x = samp.loc[4];
       let y = samp.loc[5];
 
       if (samp.p_id === proj_id){
+        allProject += 1;
         empty_box[x][y] = 100;
         labels[x][y] = samp.sa_name;
       }
@@ -80,9 +84,12 @@ const BoxChart = props => {
         empty_box[x][y] = 50;
         labels[x][y] = "Other Project";
       }
-
     }
 
+
+    console.log('allProject', allProject);
+    if (allProject === 100) {
+    console.log('In the Check Cases');
     heatMaps.push(
       <div style={{fontSize: "13px"}} >
       <h3>Box Number {i}</h3>
@@ -94,7 +101,7 @@ const BoxChart = props => {
           data={empty_box}
           height={35}
           cellStyle={(background, value, min, max, data, x, y) => ({
-            background: `rgb(0, 151, 230, ${1 - (max - value) / (max - min)})`,
+            background: `rgb(0, 151, 230, 1)`,
             fontSize: "11.5px",
             color: "#444",
           })}
@@ -102,8 +109,30 @@ const BoxChart = props => {
         />
         &nbsp;
       </div>
-
     )
+  }
+  else {
+        heatMaps.push(
+        <div style={{fontSize: "13px"}} >
+        <h3>Box Number {i}</h3>
+          <HeatMap
+            xLabels={xLabels}
+            yLabels={yLabels}
+            xLabelsLocation={"bottom"}
+            xLabelWidth={60}
+            data={empty_box}
+            height={35}
+            cellStyle={(background, value, min, max, data, x, y) => ({
+              background:`rgb(0, 151, 230, ${1 - (max - value) / (max - min)})`,
+              fontSize: "11.5px",
+              color: "#444",
+            })}
+            cellRender={(v,y,x) => `${labels[x][y]}`}
+          />
+          &nbsp;
+        </div>
+      )
+    };
   };
 
     return (

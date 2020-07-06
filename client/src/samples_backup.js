@@ -1,9 +1,9 @@
 // in src/users.js
 import React, {Fragment} from 'react';
 import { Filter, List, Datagrid, TextField, EmailField, ReferenceField, Resource,
-        ReferenceInput, SelectInput, NumberField, DateField, EditButton, Pagination,
+        ReferenceInput, SelectInput, NumberField, DateField, EditButton,
         Edit, SimpleForm, TextInput, DateInput, NumberInput, BulkDeleteButton, Create,
-        FormDataConsumer, Toolbar, SaveButton, required} from 'react-admin';
+        FormDataConsumer, Toolbar, SaveButton} from 'react-admin';
 // import RichTextInput from 'ra-input-rich-text';
 import ShipSampButton from './ShipSampButton';
 import InsertSamplesButton from './SelectLocationsButton.js';
@@ -39,10 +39,15 @@ const InsertSamplesBulkActionButtons = props => (
     <Fragment>
         <InsertSamplesButton
             label="Choose Samples" {...props} component="input"/>
+        <BulkDeleteButton{...props}/>
     </Fragment>
 );
 
-
+//Simple Form
+const manipulateSampleInput = (stringSamples, dups) => {
+    let samps = stringSamples.split(" ");
+    return samps;
+  }
 
 const SamplesCreateToolbar = (props, {record}) => (
     <Toolbar {...props}>
@@ -50,50 +55,25 @@ const SamplesCreateToolbar = (props, {record}) => (
     </Toolbar>
 );
 
-// Validate Form Entries (contents)
-const validateSamplesInsert = (values) => {
-    console.log('validateSamplesInsert', values)
-    const errors = {};
-    if (values.dups !== parseInt(values.dups, 10)) {
-        errors.dups= ['Duplicate Number must be an Integer'];
-    }
-    return errors
-};
-
-//Simple Form
-const manipulateSampleInput = (stringSamples) => {
-    let samps = stringSamples.split(" ");
-    return samps;
-}
-
-const slotsNeeded = (samps, dups) => {
-  console.log(samps)
-  let s_list = (samps.length > 1) ? samps : samps[0].split(',');
-  console.log('s_list', s_list)
-  return(Math.ceil(s_list.length  / 10) * 10 * dups)
-}
-
 export const SampleCreate = props => (
       <SamplesCreate {...props}>
-         <SimpleForm {...props} validate={validateSamplesInsert} toolbar={< SamplesCreateToolbar {...props} />}>
-           <ReferenceInput source="u_id" reference="users" label="User" validate={required('User is Required')}>
+         <SimpleForm {...props} toolbar={< SamplesCreateToolbar {...props} />}>
+           <ReferenceInput source="u_id" reference="users" label="User">
              <SelectInput optionText="last_name" />
            </ReferenceInput>
-           <ReferenceInput source="ss_id" reference="s_status" label="Status" validate={required('Status is Required')}>
+           <ReferenceInput source="ss_id" reference="s_status" label="Status">
              <SelectInput optionText="ss_name" />
            </ReferenceInput>
-           <ReferenceInput source="p_id" reference="projects" label="Projects" validate={required('Project is Required')}>
+           <ReferenceInput source="p_id" reference="projects" label="Projects">
              <SelectInput optionText="p_name" />
            </ReferenceInput>
-           <NumberInput source="dups" label="Duplicate (Number of Copies)" validate={required('Duplicate Number is Required is Required (for no duplicates, write "1")')} />
+           <NumberInput source="dups" />
            <FormDataConsumer>
              {({ formData, ...rest }) =>
                 <TextInput
                   source="samp_list"
                   label="Sample List"
-                  parse={samps => manipulateSampleInput(samps)}
-                  validate={required('Sample is Required')}
-                  // onChange={samps => neededStorage(samps, formData.dups)}
+                  parse={samps => manipulateSampleInput(samps, formData.dups)}
                   {...rest}
               />}
            </FormDataConsumer>
@@ -103,12 +83,12 @@ export const SampleCreate = props => (
                  formData.samp_list &&
                 <Fragment>
                   <p>
-                    Slots needed for Storage: {slotsNeeded(formData.samp_list, formData.dups)}
+                    Slots needed for Storage: {Math.ceil(formData.samp_list.length  / 10) * 10 * formData.dups }
                   </p>
               </Fragment>}
            </FormDataConsumer>
-           <DateInput source="date_cryo" validate={required('Cryo Date is Required')} label="Cryo Date" />
-           <DateInput source="date_exp" validate={required('Expiration Date is Required')} label="Expiration Date"/>
+           <DateInput source="date_cryo" label="Cryo Date" />
+           <DateInput source="date_exp" label="Expiration Date"/>
            <FormDataConsumer>
              {({ formData, ...rest }) =>
               formData.dups &&
@@ -125,32 +105,23 @@ export const SampleCreate = props => (
        </SamplesCreate>
 );
 
-const SampleEditToolbar = props => (
-    <Toolbar {...props} >
-        <SaveButton />
-    </Toolbar>
-);
 export const SampleEdit = props => (
     <Edit {...props}>
-        <SimpleForm toolbar={<SampleEditToolbar/>}>
-            <TextInput source="sa_name" label= "Sample Name" validate={required('Sample Name is Required')} />
-            <ReferenceInput source="u_id" reference="users" label= "User Last Name">
-              <SelectInput optionText="last_name" validate={required('User is Required')} />
-            </ReferenceInput>
-            <ReferenceInput source="ss_id" reference="s_status" label= "Status" >
-              <SelectInput optionText="ss_name" validate={required('Status is Required')}/>
-            </ReferenceInput>
-            <ReferenceInput source="p_id" reference="projects" label="Project" >
-              <SelectInput optionText="p_name" validate={required('Project is Required')}/>
-            </ReferenceInput>
-            <DateInput source="date_cryo" />
+        <SimpleForm>
+            <TextInput source="id" />
+            <TextInput source="sa_name" />
+            <ReferenceInput source="u_id" reference="users"><SelectInput optionText="last_name" /></ReferenceInput>
+            <ReferenceInput source="ss_id" reference="s_status"><SelectInput optionText="ss_name" /></ReferenceInput>
+            <ReferenceInput source="p_id" reference="projects"><SelectInput optionText="p_name" /></ReferenceInput>
+            <DateInput source="loc" />
+            <NumberInput source="date_cryo" />
             <DateInput source="date_exp" />
         </SimpleForm>
     </Edit>
 );
 
 export const SampleList = props => (
-    <List filters={<SamplesFilter/>} {...props} bulkActionButtons={<SamplesBulkActionButtons />} >
+    <List filters={<SamplesFilter/>}{...props} bulkActionButtons={<SamplesBulkActionButtons />} >
         <Datagrid>
             <TextField source="id" label="ID" />
             <TextField source="sa_name" label="Sample"/>
@@ -169,6 +140,8 @@ export const SampleList = props => (
         </Datagrid>
     </List>
 );
+
+
 
 
 export const AvailStoreList = props => (

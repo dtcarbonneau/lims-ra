@@ -1,7 +1,19 @@
 import dataProvider from './limsDataProvider'
-const props = {"u_id":3,"ss_id":-1,"p_id":5,"dups":3,"samp_list":["s1","s2","s3","s4","s5","s6"],"storageIds":[2,3,4]}
+import { Redirect } from "react-router-dom";
+import React, { useState } from 'react';
+import { useCallback } from 'react';
+import {
+    SaveButton,
+    Toolbar,
+    useCreate,
+    useRedirect,
+    useNotify,
+} from 'react-admin';
+// const props = {"u_id":3,"ss_id":-1,"p_id":5,"dups":3,"samp_list":["s1","s2","s3","s4","s5","s6"],"storageIds":[2,3,4]}
+
 
 const SaveFunction = (props) => {
+
   //const {u_id, ss_id, p_id, dups, samp_list, storageIds} = props;
 
   const makeStorage = (store_start,dups) => {
@@ -53,8 +65,11 @@ const SaveFunction = (props) => {
       sort: {field: "id", order: "DESC"}})
       .then (store_start => dataProvider.
         createMany('samples',
-        {'fields':['sa_name','u_id','ss_id','p_id','loc'],
+        {'fields':['sa_name','u_id','ss_id','p_id','loc', 'cryo_date', 'exp_date'],
         'data':store_samples(props,store_start.data)}))
+
+
+
 
       //(data => {
       //  dataProvider.
