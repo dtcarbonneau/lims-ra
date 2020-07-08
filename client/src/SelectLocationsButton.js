@@ -17,7 +17,6 @@ import {
 import { Field } from 'react-final-form';
 
 const InsertSamplesButton = props => {
-  // console.log(props);
   const dups = props.options.myCustomAttr;
   const sampList = props.options.sampleList;
   console.log('sampList', sampList);

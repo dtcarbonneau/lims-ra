@@ -26,7 +26,7 @@ const BoxChart = props => {
     resource: 'boxsamples',
     payload: {filter: {"p_id": proj_id, "ss_id": status}, pagination: {page: 1, perPage: 1000}, sort: {field: "id", order: "DESC"}}
   });
-  console.log(data)
+
   // Helper Function to identify unique entries of array
   const onlyUnique = (value, index, self) => {
     return self.indexOf(value) === index;
@@ -38,10 +38,11 @@ const BoxChart = props => {
   // Find Unique Boxes
   let unique_boxes = [];
   if (data !== undefined){
-    data.forEach(datum => unique_boxes.push(datum.loc.slice(0, 4)));
+    data.forEach(datum => unique_boxes.push(datum.loc.slice(0, 12)));
   }
+
   let boxNumbers = unique_boxes.filter(onlyUnique);
-  console.log(boxNumbers);
+  console.log('box numbers', boxNumbers);
   const numberOfBoxes = boxNumbers.length;
 
   const heatMaps = [];
@@ -51,7 +52,7 @@ const BoxChart = props => {
     // Get samples in the right box
     let currentBox = boxNumbers[i];
     let currentSamples = []
-    data.forEach(d => {if (d.loc.slice(0, 4) === currentBox){currentSamples.push(d)}})
+    data.forEach(d => {if (d.loc.slice(0, 12) === currentBox){currentSamples.push(d)}})
 
 
     // Initialize empty box
@@ -67,13 +68,11 @@ const BoxChart = props => {
     }
 
     let allProject = 0;
+
     // Place data in arrays
     for (const samp of currentSamples){
-      // console.log(samp);
-      // console.log(samp.p_id);
-      // console.log(proj_id);
-      let x = samp.loc[4];
-      let y = samp.loc[5];
+      let x = samp.loc.slice(-2,-1);
+      let y = samp.loc.slice(-1);
 
       if (samp.p_id === proj_id){
         allProject += 1;
@@ -92,7 +91,7 @@ const BoxChart = props => {
     console.log('In the Check Cases');
     heatMaps.push(
       <div style={{fontSize: "13px"}} >
-      <h3>Box Number {i}</h3>
+      <h3>Box Number {boxNumbers[i]}</h3>
         <HeatMap
           xLabels={xLabels}
           yLabels={yLabels}
@@ -114,7 +113,7 @@ const BoxChart = props => {
   else {
         heatMaps.push(
         <div style={{fontSize: "13px"}} >
-        <h3>Box Number {i}</h3>
+        <h3>Box Number {boxNumbers[i]}</h3>
           <HeatMap
             xLabels={xLabels}
             yLabels={yLabels}

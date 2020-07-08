@@ -16,8 +16,6 @@ var query = (q) => pool.query(q)
 
 
 const postLogin = async (req, res) => {
-  console.log('POSTUSER CALLED');
-
   const bools = [
     sql`TRUE`,
   ];
@@ -330,7 +328,7 @@ const getSamples = async (req, res) => {
   const range_offset = (range_qs != null) ? sql`OFFSET ${range_qs[0]} LIMIT ${range_qs[1] - range_qs[0]}` : sql``;
 
   const {rows} =  await query(
-    sql`SELECT *, COUNT(*) OVER() AS count FROM samples WHERE ${sql.join(filter_be,sql` AND `)} ${range_offset}`);
+    sql`SELECT *, COUNT(*) OVER() AS count FROM samples WHERE ${sql.join(filter_be,sql` AND `)} ${range_offset} `);
   res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
   res.setHeader("Access-Control-Allow-Origin", "*");
   if (rows.length > 0) {
@@ -343,36 +341,13 @@ const getSamples = async (req, res) => {
 }
 //res.setHeader("Content-Range",'bytes:0-9/20');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const getBoxSamples = async (req, res) => {
   const queryString = JSON.parse(req.query.filter);
   const range_qs = req.query.range ? JSON.parse(req.query.range): null;
 
   const {rows} =  await query(
-  sql`SELECT *, COUNT(*) OVER() AS count FROM samples WHERE substring(loc,1, 4)
-      in (SELECT SUBSTRING(loc, 1, 4) AS ExtractString FROM samples WHERE  p_id = ${queryString.p_id})
+  sql`SELECT *, COUNT(*) OVER() AS count FROM samples WHERE substring(loc,1, 14)
+      in (SELECT SUBSTRING(loc, 1, 14) AS ExtractString FROM samples WHERE  p_id = ${queryString.p_id})
       AND ss_id = 1`);
   res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -452,8 +427,6 @@ const putProjects = async (req, res) => {
   const update = req.body;
   const columns = [];
 
-  console.log(update);
-
   if (update.p_name !== undefined) {
     columns.push(
       sql`p_name = ${update.p_name}
@@ -500,13 +473,21 @@ const putProjects = async (req, res) => {
 
 //POST SAMPLES
 const postSamples = async (req, res) => {
-  console.log('POSTSAMPLES', req.body);
-  const inserts=(sql.unnest(req.body,['text','int4','int4','int4', 'date', 'date', 'text']));
+  console.log(req.body);
+  if (req.body !== undefined) {
+      const request_data = req.body;
 
-  const {rows} =  await query(
-     sql`INSERT INTO samples (sa_name, u_id, ss_id, p_id, date_cryo, date_exp, loc)
-     SELECT * FROM ${inserts}`);
-     res.send(rows);
+      const inserts=(sql.unnest(req.body,['text','int4','int4','int4', 'date', 'date', 'text']));
+
+      const {rows} =  await query(
+         sql`INSERT INTO samples (sa_name, u_id, ss_id, p_id, date_cryo, date_exp, loc)
+         SELECT * FROM ${inserts}`);
+         res.send(rows);
+  }
+  else{
+     console.log('req is undefined');
+     res.send(400);
+  };
 }
 
 const getSampleStore = async (req, res) => {
@@ -530,9 +511,6 @@ const getSampleStore = async (req, res) => {
       sql`SELECT *, COUNT(*) OVER() AS count FROM get_avail_store(${filter})
           WHERE ${sql.join(booleanExpressions,sql` AND `)} ${range_offset}`
     );
-    console.log(sql`SELECT *, COUNT(*) OVER() AS count FROM get_avail_store(${filter})
-          WHERE ${sql.join(booleanExpressions,sql` AND `)} ${range_offset}`);
-
     res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
     res.setHeader("Access-Control-Allow-Origin", "*");
     if (rows.length > 0){

@@ -10,7 +10,8 @@ import {
     useUnselectAll,
     useDataProvider,
     Loading,
-    Error
+    Error,
+    showNotification
 } from 'react-admin';
 // import dataProvider from './limsDataProvider'
 
@@ -63,10 +64,18 @@ const CustomSaveButton = props => {
        const aliquots = samp_list.reduce((acc, cur) => acc.concat(Array(props.dups).fill(cur)),[]);
        //bulid storage from start cell and slot size data
        const storage = makeStorage(store_start,props.dups);
+       console.log(storage);
+       console.log('samp_list',samp_list);
+       console.log(' aliquots', aliquots);
 
-       const als = aliquots.map((s,index) => [s, props.u_id, props.ss_id, props.p_id,
-                                              props.date_cryo, props.date_exp, storage[index]])
+       if (aliquots.length > storage.length){
+         alert("Did not select enough storage!");
+       }
+       else{
+         const als = aliquots.map((s,index) => [s, props.u_id, props.ss_id, props.p_id,
+                                             props.date_cryo, props.date_exp, storage[index]])
         return als;
+      }
      }
 
 
@@ -86,11 +95,9 @@ const CustomSaveButton = props => {
            unselectAll('get_avail_store');
            redirectTo(`/samples?displayedFilters=%7B"p_id"%3Atrue%7D&filter=%7B"p_id"%3A${values.p_id}%7D`);
         })
-        .catch(error => {
-          setError(error);
+        .catch((error) => {
+          showNotification('Error: Problems with inserting', 'warning');
         })}, [redirectTo, refresh]);
-     if (error) return <Error />;
-     
     return <SaveButton {...props} onSave={handleSave} />;
 };
 

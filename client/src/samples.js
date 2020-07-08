@@ -52,7 +52,6 @@ const SamplesCreateToolbar = (props, {record}) => (
 
 // Validate Form Entries (contents)
 const validateSamplesInsert = (values) => {
-    console.log('validateSamplesInsert', values)
     const errors = {};
     if (values.dups !== parseInt(values.dups, 10)) {
         errors.dups= ['Duplicate Number must be an Integer'];
@@ -67,9 +66,7 @@ const manipulateSampleInput = (stringSamples) => {
 }
 
 const slotsNeeded = (samps, dups) => {
-  console.log(samps)
   let s_list = (samps.length > 1) ? samps : samps[0].split(',');
-  console.log('s_list', s_list)
   return(Math.ceil(s_list.length  / 10) * 10 * dups)
 }
 
@@ -163,6 +160,7 @@ export const SampleList = props => (
             <ReferenceField label="Project" source="p_id" reference="projects">
                 <TextField source="p_name" label="Project" />
             </ReferenceField>
+            <TextField source="loc" label="Location" />
             <DateField source="date_cryo" label="Cryo Date" />
             <DateField source="date_exp" label="Expiration Date"/>
             <EditButton/>
@@ -176,46 +174,8 @@ export const AvailStoreList = props => (
     title="Available Storage">
         <Datagrid>
             <TextField source="id" />
-            <TextField source="freezer"/>
-            <TextField source="rack"/>
             <TextField source="first_cell"/>
             <TextField source="slot_size"/>
         </Datagrid>
     </List>
 );
-
-
-
-// export const SampleCreate = props => (
-//     <Create {...props}>
-//         <SimpleForm>
-//           <ReferenceInput source="u_id" reference="users" label="User">
-//             <SelectInput optionText="last_name" />
-//           </ReferenceInput>
-//           <ReferenceInput source="ss_id" reference="s_status" label="Status">
-//             <SelectInput optionText="ss_name" />
-//           </ReferenceInput>
-//           <ReferenceInput source="p_id" reference="projects" label="Projects">
-//             <SelectInput optionText="p_name" />
-//           </ReferenceInput>
-//           <TextInput source="loc" label="Location"/>
-//           <DateInput source="date_cryo" label="Cryo Date" />
-//           <DateInput source="date_exp" label="Expiration Date"/>
-//         </SimpleForm>
-//     </Create>
-// );
-
-// export const SampleEdit = props => (
-//     <Edit {...props}>
-//         <SimpleForm>
-//            <TextInput disabled source="id" />
-//            <ReferenceInput source="p_id" reference="projects">
-//               <SelectInput optionText="p_name" />
-//            </ReferenceInput>
-//             <ReferenceInput source="u_id" reference="users">
-//                <SelectInput optionText="last_name" />
-//             </ReferenceInput>
-//             <TextInput source="loc" />
-//         </SimpleForm>
-//     </Edit>
-// );
